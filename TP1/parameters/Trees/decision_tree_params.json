@@ -1,0 +1,13 @@
+{
+	"criterion":["gini","entropy"],
+	"splitter":["best","random"],
+	"max_depth":[null,"auto","sqrt","log2"],
+	"min_samples_split":2,
+	"min_samples_leaf":1,
+	"min_weight_fraction_leaf":0.0,
+	"max_features":null,
+	"random_state":null,
+	"max_leaf_nodes":null,
+	"class_weight":[null,"balanced"],
+	"presort":[true,false]
+}
