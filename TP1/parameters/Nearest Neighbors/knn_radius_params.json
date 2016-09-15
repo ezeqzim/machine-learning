@@ -1,10 +1,10 @@
 {
-	"radius":1.0, 
+	"radius":[1.0],
 	"weights": ["uniform","distance"],
 	"algorithm":["auto", "ball_tree", "kd_tree", "brute"],
-	"leaf_size":30,
+	"leaf_size":[30],
 	"p":[1,2],
-	"metric":"minkowski",
-	"outlier_label":null,
-	"metric_params":null
+	"metric":["minkowski"],
+	"outlier_label":[null],
+	"metric_params":[null]
 }
