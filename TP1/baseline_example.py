@@ -8,8 +8,8 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.cross_validation import cross_val_score
 
 # Leo los mails (poner los paths correctos).
-ham_txt= json.load(open('dataset_json/ham_txt.json'))
-spam_txt= json.load(open('dataset_json/spam_txt.json'))
+ham_txt= json.load(open('dataset_dev/ham_dev.json'))
+spam_txt= json.load(open('dataset_dev/spam_dev.json'))
 
 # Imprimo un mail de ham y spam como muestra.
 print ham_txt[0]
