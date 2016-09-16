@@ -1,6 +1,7 @@
 ### http://scikit-learn.org/stable/modules/model_evaluation.html#scoring-parameter ###
 import sys
 import json
+import numpy as np
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
@@ -12,9 +13,8 @@ from sklearn.svm import NuSVC
 from sklearn.ensemble import RandomForestClassifier
 
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.cross_validation import KFold
-from sklearn.cross_validation import ShuffleSplit
-from sklearn.metrics import accuracy_score
+from sklearn.cross_validation import cross_val_score
+from sklearn.metrics import classification_report
 from sklearn.grid_search import GridSearchCV
 
 X_train = []
@@ -40,58 +40,49 @@ def load_data():
   X_validation = ham_validation + spam_validation
   global y_validation
   y_validation = [0 for _ in range(len(ham_validation))] + [1 for _ in range(len(spam_validation))]
+  X_train = X_train[0:50]
+  y_train = y_train[0:50]
+  X_validation = X_validation[0:50]
+  y_validation = y_validation[0:50]
 
 def etapa1():
-  estimators = []
-  scores = []
-  params = []
-  scorers = []
-  kf = KFold(len(X_train), n_folds=10)
-  for train_index, test_index in kf:
-    # Index to create the folds
-    kf_X_train = []
-    kf_X_test = []
-    kf_y_train = []
-    kf_y_test = []
-    for i in train_index:
-      kf_X_train.append(X_train[i])
-      kf_y_train.append(y_train[i])
-    for i in test_index:
-      kf_X_test.append(X_train[i])
-      kf_y_test.append(y_train[i])
-
-    # Extract max_features most frequent words from train folds
-    vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
-    X = vectorizer.fit_transform(kf_X_train)
-    # Apply the same extraction on test fold
-    X_test = vectorizer.transform(kf_X_test)
-
-    clf = DecisionTreeClassifier()
-    param_grid = json.load(open('parameters/Trees/decision_tree_params.json'))
-    grid_search = GridSearchCV(clf, param_grid=param_grid, scoring='f1')
-    grid_search.fit(X, kf_y_train)
-    estimators.append(grid_search.best_estimator_)
-    scores.append(grid_search.best_score_)
-    params.append(grid_search.best_params_)
-    scorers.append(grid_search.scorer_)
-  for i in range(0, 10):
-    print str(i) + ' ' + str(estimators[i]) + ' ' + str(scores[i]) + ' ' + str(params[i]) + ' ' + str(scorers[i])
+  vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
+  X = vectorizer.fit_transform(X_train)
+  X_val = vectorizer.transform(X_validation)
+  clf = DecisionTreeClassifier()
+  param_grid = json.load(open('parameters/Trees/decision_tree_params.json'))
+  grid_search = GridSearchCV(clf, param_grid=param_grid, scoring='f1', cv=10)
+  grid_search.fit(X, y_train)
+  print 'Best Estimator:', str(grid_search.best_estimator_)
+  print 'Best Score:', str(grid_search.best_score_)
+  print 'Best Params:', str(grid_search.best_params_)
+  print 'Validation Score:', grid_search.score(X_val, y_validation)
+  print 'Classification Report:'
+  predictions = grid_search.predict(X_val)
+  print classification_report(y_validation, predictions)
 
 def etapa2():
+  names = [
+    'MultinomialNB'
+    'BernoulliNB',
+    'KNeighborsClassifier',
+    'RadiusNeighborsClassifier',
+    'SVC',
+    'NuSVC',
+    'RandomForestClassifier'
+  ]
+
   clfs = [
-    GaussianNB(),
     MultinomialNB(),
     BernoulliNB(),
     KNeighborsClassifier(),
     RadiusNeighborsClassifier(),
     SVC(),
     NuSVC(),
-    RandomForestClassifier()
+    # RandomForestClassifier()
   ]
 
   param_grids = [
-    # Gaussian no toma parametros... habria que ver como se porta con el [], o poner un if bien cabeza en el for
-    [],
     json.load(open('parameters/Bayes/multinomial_bayes_params.json')),
     json.load(open('parameters/Bayes/bernoulli_bayes_params.json')),
     json.load(open('parameters/Nearest Neighbors/knn_params.json')),
@@ -99,35 +90,33 @@ def etapa2():
     json.load(open('parameters/SVM/svc_params.json')),
     json.load(open('parameters/SVM/nusvc_params.json')),
     # Hay que cambiar este por random forest!
-    json.load(open('parameters/Trees/decision_tree_params.json'))
+    # json.load(open('parameters/Trees/decision_tree_params.json'))
   ]
 
-  kf = KFold(len(X_train), n_folds=10)
-  for train_index, test_index in kf:
-    # Index to create the folds
-    kf_X_train = []
-    kf_X_test = []
-    kf_y_train = []
-    kf_y_test = []
-    for i in train_index:
-      kf_X_train.append(X_train[i])
-      kf_y_train.append(y_train[i])
-    for i in test_index:
-      kf_X_test.append(X_train[i])
-      kf_y_test.append(y_train[i])
+  vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
+  X = vectorizer.fit_transform(X_train)
+  X_val = vectorizer.transform(X_validation)
 
-    vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
-    X = vectorizer.fit_transform(kf_X_train)
-    X_test = vectorizer.transform(kf_X_test)
+  # El gaussian naive bayes no toma parametros, lo corro sin gridsearch
+  clf = GaussianNB()
+  scores = cross_val_score(clf, X.todense(), y_train, scoring='f1', cv=10)
+  print 'GaussianNB'
+  print np.mean(scores), np.std(scores)
 
-    for i in len(param_grids):
-      grid_search = GridSearchCV(clfs[i], param_grid=param_grids[i])
-      grid_search.fit(X, kf_y_train, scoring='f1', cv=ShuffleSplit(1, test_size=0.20, n_iter=1, random_state=0))
-      print i
-      print grid_search.best_estimator_
-      print grid_search.best_score_
-      print grid_search.best_params_
-      print grid_search.scorer_
+  for i in range(0, len(param_grids)):
+    grid_search = GridSearchCV(clfs[i], param_grid=param_grids[i], scoring='f1', cv=10)
+    grid_search.fit(X, y_train)
+    print names[i]
+    print 'Best Estimator:', str(grid_search.best_estimator_)
+    print 'Best Score:', str(grid_search.best_score_)
+    print 'Best Params:', str(grid_search.best_params_)
+    print 'Validation Score:', grid_search.score(X_val, y_validation)
+    print 'Classification Report:'
+    predictions = grid_search.predict(X_val)
+    print classification_report(y_validation, predictions)
+
+def etapa3():
+  pass
 
 def modo_de_uso():
   print 'Modo de uso:'
