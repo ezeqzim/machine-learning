@@ -1,5 +1,4 @@
 {
-	"alpha":[1.0],
-	"fit_prior":[true,false],
-	"class_prior":[null]
+	"alpha":[0.0, 0.5, 1.0],
+	"fit_prior":[true,false]
 }

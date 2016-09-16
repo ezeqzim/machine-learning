@@ -40,11 +40,6 @@ def load_data():
   X_validation = ham_validation + spam_validation
   global y_validation
   y_validation = [0 for _ in range(len(ham_validation))] + [1 for _ in range(len(spam_validation))]
-  print 'Let there be ML'
-  # X_train = X_train[0:50]
-  # y_train = y_train[0:50]
-  # X_validation = X_validation[0:50]
-  # y_validation = y_validation[0:50]
 
 def etapa1():
   vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
@@ -68,7 +63,6 @@ def etapa2():
     'BernoulliNB',
     'KNeighborsClassifier',
     'RadiusNeighborsClassifier',
-    'SVC',
     'NuSVC',
     'RandomForestClassifier'
   ]
@@ -78,9 +72,8 @@ def etapa2():
     BernoulliNB(),
     KNeighborsClassifier(),
     RadiusNeighborsClassifier(),
-    SVC(),
     NuSVC(),
-    # RandomForestClassifier()
+    RandomForestClassifier()
   ]
 
   param_grids = [
@@ -88,10 +81,8 @@ def etapa2():
     json.load(open('parameters/Bayes/bernoulli_bayes_params.json')),
     json.load(open('parameters/Nearest Neighbors/knn_params.json')),
     json.load(open('parameters/Nearest Neighbors/knn_radius_params.json')),
-    json.load(open('parameters/SVM/svc_params.json')),
     json.load(open('parameters/SVM/nusvc_params.json')),
-    # Hay que cambiar este por random forest!
-    # json.load(open('parameters/Trees/decision_tree_params.json'))
+    json.load(open('parameters/Trees/random_forest_params.json'))
   ]
 
   vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)

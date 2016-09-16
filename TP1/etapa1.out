@@ -1,0 +1,15 @@
+Best Estimator: DecisionTreeClassifier(class_weight=None, criterion=u'entropy', max_depth=25,
+            max_features=None, max_leaf_nodes=None, min_samples_leaf=1,
+            min_samples_split=2, min_weight_fraction_leaf=0.0,
+            presort=False, random_state=None, splitter=u'best')
+Best Score: 0.992014449901
+Best Params: {u'max_features': None, u'splitter': u'best', u'criterion': u'entropy', u'max_depth': 25}
+Validation Score: 0.992007104796
+Classification Report:
+             precision    recall  f1-score   support
+
+          0       0.99      0.99      0.99      4500
+          1       0.99      0.99      0.99      4500
+
+avg / total       0.99      0.99      0.99      9000
+

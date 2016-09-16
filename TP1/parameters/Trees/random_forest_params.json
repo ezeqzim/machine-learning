@@ -1,0 +1,7 @@
+{
+  "n_estimators":[5, 10, 15],
+  "criterion":["gini","entropy"],
+  "max_features":[null,"sqrt","log2"],
+  "max_depth":[10, 25, 50, null],
+  "bootstrap":[true, false]
+}

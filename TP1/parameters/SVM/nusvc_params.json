@@ -1,16 +1,6 @@
 {
-	"nu":[0.5],
-	"kernel":["rbf","linear", "poly", "sigmoid", "precomputed"],
-	"degree":[3],
-	"gamma":["auto"],
-	"coef0":[0.0],
+	"nu":[0.25, 0.5, 0.75],
+	"kernel":["rbf", "linear", "poly", "sigmoid", "precomputed"],
 	"shrinking":[true,false],
-	"probability":[true,false],
-	"tol":[0.001],
-	"cache_size":[200],
-	"class_weight":[null,"balanced"],
-	"verbose":[false],
-	"max_iter":[-1],
-	"decision_function_shape":[null,"ovo","ovr"],
-	"random_state":[null]
+	"decision_function_shape":["ovo", "ovr"]
 }
