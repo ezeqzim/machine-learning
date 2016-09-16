@@ -40,10 +40,11 @@ def load_data():
   X_validation = ham_validation + spam_validation
   global y_validation
   y_validation = [0 for _ in range(len(ham_validation))] + [1 for _ in range(len(spam_validation))]
-  X_train = X_train[0:50]
-  y_train = y_train[0:50]
-  X_validation = X_validation[0:50]
-  y_validation = y_validation[0:50]
+  print 'Let there be ML'
+  # X_train = X_train[0:50]
+  # y_train = y_train[0:50]
+  # X_validation = X_validation[0:50]
+  # y_validation = y_validation[0:50]
 
 def etapa1():
   vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
@@ -63,7 +64,7 @@ def etapa1():
 
 def etapa2():
   names = [
-    'MultinomialNB'
+    'MultinomialNB',
     'BernoulliNB',
     'KNeighborsClassifier',
     'RadiusNeighborsClassifier',
@@ -102,6 +103,11 @@ def etapa2():
   scores = cross_val_score(clf, X.todense(), y_train, scoring='f1', cv=10)
   print 'GaussianNB'
   print np.mean(scores), np.std(scores)
+  print 'Classification Report:'
+  clf.fit(X.todense(), y_train)
+  print 'Validation Score:', clf.score(X_val.todense(), y_validation)
+  predictions = clf.predict(X_val.todense())
+  print classification_report(y_validation, predictions)
 
   for i in range(0, len(param_grids)):
     grid_search = GridSearchCV(clfs[i], param_grid=param_grids[i], scoring='f1', cv=10)
