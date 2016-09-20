@@ -1,5 +1,5 @@
 {
-	"radius":[1.0],
+	"radius":[1.0, 5.0, 10.0],
 	"weights": ["uniform","distance"],
 	"algorithm":["brute"],
   "metric":["minkowski"],
