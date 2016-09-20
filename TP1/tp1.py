@@ -47,7 +47,7 @@ def etapa1():
   X_val = vectorizer.transform(X_validation)
   clf = DecisionTreeClassifier()
   param_grid = json.load(open('parameters/Trees/decision_tree_params.json'))
-  grid_search = GridSearchCV(clf, param_grid=param_grid, scoring='f1', cv=10)
+  grid_search = GridSearchCV(clf, param_grid=param_grid, scoring='f1', cv=10, n_jobs=-1)
   grid_search.fit(X, y_train)
   print 'Best Estimator:', str(grid_search.best_estimator_)
   print 'Best Score:', str(grid_search.best_score_)
@@ -101,7 +101,7 @@ def etapa2():
   print classification_report(y_validation, predictions)
 
   for i in range(0, len(param_grids)):
-    grid_search = GridSearchCV(clfs[i], param_grid=param_grids[i], scoring='f1', cv=10)
+    grid_search = GridSearchCV(clfs[i], param_grid=param_grids[i], scoring='f1', cv=10, n_jobs=-1)
     grid_search.fit(X, y_train)
     print names[i]
     print 'Best Estimator:', str(grid_search.best_estimator_)
