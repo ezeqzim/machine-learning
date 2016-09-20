@@ -116,6 +116,61 @@ def etapa2():
 
 def etapa3():
   pass
+  ##################### FEATURE SELECTION #####################
+
+  # Umbral de Varianza
+  # Remueve todos los atributos cuya varianza esté por debajo de un cierto umbral, se lo pasas con el parámetro treshold y después le tiras el fit_transform bien peola
+
+  #>>> from sklearn.feature_selection import VarianceThreshold
+  #>>> X = [[0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [0, 1, 0], [0, 1, 1]]
+  #>>> sel = VarianceThreshold(threshold=(.8 * (1 - .8)))
+  #>>> sel.fit_transform(X)
+  #array([[0, 1],[1, 0],[0, 0],[1, 1],[1, 0],[1, 1]])
+
+  #UNIVARIADAS (Hay algunas univariadas un poco más elaboradas que el umbral)
+  #Tods implementan fit y transform
+
+  #Select K Best. No más que eso, agarra los mejores K, el default es 10, y toma una score_func que "Function taking two arrays X and y, and returning a pair of arrays (scores, pvalues)".
+  #Creo que es bajo qué criterio decidimos cuál es mejor
+  #sklearn.feature_selection.SelectKBest(score_func=<function f_classif>, k=10)
+ 
+
+  #sklearn.feature_selection.SelectPercentile(score_func=<function f_classif>, percentile=10)
+  #Hace lo mismo pero elije "according to a percentile of the highest scores."   El default es 10
+
+  #sklearn.feature_selection.SelectFpr(score_func=<function f_classif>, alpha=0.05)
+  #Este se queda los features segun un test, FPR test stands for False Positive Rate test. Alpha es The highest p-value for features to be kept.
+
+  #Después está este que combina todos.
+  #sklearn.feature_selection.GenericUnivariateSelect(score_func=<function f_classif>, mode='percentile', param=1e-05)
+  #En "mode" le decis cual usas, tipo 'k_best'.
+
+  #RECURSIVE FEATURE ELIMINATION
+  # sklearn.feature_selection.RFE(estimator, n_features_to_select=None, step=1, estimator_params=None, verbose=0)
+  # estimator es un clasificador--> A supervised learning estimator with a fit method that updates a coef_ attribute that holds the fitted parameters. 
+  #                                 Important features must correspond to high absolute values in the coef_ array.
+  # n_features_to_select es bastante obvio,  si lo dejas en None pone la mitad
+  # Step dice cuantas sacar por iteración. Si pones un real 0 < r < 1 remueve el porcentaje
+  # El estimator params no lo usemos jjaja está deprecated XD: --> Parameters for the external estimator. This attribute is deprecated as of version 0.16 and will be removed in 0.18. 
+  #                                                                Use estimator initialisation or set_params method instead.
+
+  #>>> from sklearn.datasets import make_friedman1
+  #>>> from sklearn.feature_selection import RFE
+  #>>> from sklearn.svm import SVR
+  #>>> X, y = make_friedman1(n_samples=50, n_features=10, random_state=0)
+  #>>> estimator = SVR(kernel="linear")
+  #>>> selector = RFE(estimator, 5, step=1)
+  #>>> selector = selector.fit(X, y)
+  #>>> selector.support_ 
+  #array([ True,  True,  True,  True,  True,
+  #      False, False, False, False, False], dtype=bool)
+  #>>> selector.ranking_
+  #array([1, 1, 1, 1, 1, 6, 4, 3, 2, 5])
+
+
+  ##################### FEATURE TRANSFORMATION #####################
+
+
   #En PCA mandas PCA(n_components=None, copy=True, whiten=False)
   #N_COMPONENTS
   # n_components es básicamente cuántas componentes nos queremos quedar. El default se queda todas y si pones n_components='mle' dice esto
