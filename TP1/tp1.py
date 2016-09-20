@@ -17,6 +17,8 @@ from sklearn.cross_validation import cross_val_score
 from sklearn.metrics import classification_report
 from sklearn.grid_search import GridSearchCV
 
+from sklearn.decomposition import PCA
+
 X_train = []
 y_train = []
 X_validation = []
@@ -114,6 +116,42 @@ def etapa2():
 
 def etapa3():
   pass
+  #En PCA mandas PCA(n_components=None, copy=True, whiten=False)
+  #N_COMPONENTS
+  # n_components es básicamente cuántas componentes nos queremos quedar. El default se queda todas y si pones n_components='mle' dice esto
+  		# if n_components == ‘mle’, Minka’s MLE is used to guess the dimension. 
+  # Y si mandas un numero menor a 1, hace esto: select the number of components such that the amount of variance that needs to be explained is greater than the percentage specified by n_components
+  # COPY
+  # El default es TRUE
+  # If False, data passed to fit are overwritten and running fit(X).transform(X) will not yield the expected results, use fit_transform(X) instead. (no entendi bien esto)
+  # WHITEN
+  # El default es FALSE
+  # When True the components_ vectors are divided by n_samples times singular values to ensure uncorrelated outputs with unit component-wise variances. (Tampoco entendí esto, diría que no lo usemos)
+
+  #Ejemplito
+
+  #>>> import numpy as np
+  #>>> from sklearn.decomposition import PCA
+  #>>> X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
+  #>>> pca = PCA(n_components=2)
+  #>>> pca.fit(X)
+  #PCA(copy=True, n_components=2, whiten=False)
+  #>>> print(pca.explained_variance_ratio_) 
+  #[ 0.99244...  0.00755...]
+
+  #Metodos
+
+  #fit_transform(X,y) --> Hace el fit y aplica la reducción de dimensionalidad
+  #transform(X,y) ---> hace solo la reducción.
+  #score(X,y) ---> Return the average log-likelihood of all samples
+  #get_covariance()
+
+  #Atributos
+
+  #Le podes pedir las componentes
+  # n_components_ te tira el numero de componentes (por si usaste el mle o 0 < n_componentes < 1)
+  # explained_variance_ratio_ te tira el "Percentage of variance explained by each of the selected components"
+
 
 def modo_de_uso():
   print 'Modo de uso:'
