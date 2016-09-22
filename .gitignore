@@ -89,3 +89,11 @@ ENV/
 .ropeproject
 
 TP1/dataset_dev
+
+# Latex
+*.aux
+*.log
+*.out
+*.toc
+*.synctex.gz
+*.pdf

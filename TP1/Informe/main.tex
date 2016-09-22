@@ -1,0 +1,54 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{caratula}
+\usepackage{geometry}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usepackage{float}
+%\usepackage{makecell}
+\usepackage{tabularx}
+\usepackage[nomove]{cite}
+\usepackage[nottoc]{tocbibind}
+\usepackage{placeins}
+\usepackage{hyperref}
+\hypersetup{
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
+}
+\input{page.layout}
+
+\begin{document}
+\titulo{Trabajo Práctico 1}
+\subtitulo{\emph{Detección de SPAM}}
+
+\fecha{\today}
+
+\materia{Aprendizaje Automático}
+
+\integrante{Ezequiel Zimenspitz}{LU}{MAIL}
+\integrante{Nicolas Donatucci}{LU}{MAIL}
+\integrante{Francisco Noriega}{660/12}{frannoriega.92@gmail.com}
+
+\maketitle
+
+\newpage
+\thispagestyle{empty}
+\vfill
+\vspace{3cm}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\input{featureextraction}
+\newpage
+\input{models}
+\newpage
+\input{dimensionredux}
+\newpage
+\input{results}
+\newpage
+\input{discussion}
+
+\bibliographystyle{unsrt}%
+\bibliography{main}
+\end{document}
