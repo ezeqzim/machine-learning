@@ -2,6 +2,7 @@
 import sys
 import json
 import numpy as np
+
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.naive_bayes import GaussianNB
 from sklearn.naive_bayes import MultinomialNB
@@ -17,12 +18,18 @@ from sklearn.cross_validation import cross_val_score
 from sklearn.metrics import classification_report
 from sklearn.grid_search import GridSearchCV
 
+from sklearn.feature_selection import VarianceThreshold
+from sklearn.feature_selection import SelectPercentile
+from sklearn.feature_selection import RFE
 from sklearn.decomposition import PCA
+from sklearn.metrics import f1_score
 
 X_train = []
 y_train = []
 X_validation = []
 y_validation = []
+X = []
+X_val = []
 
 def load_data():
   ham_txt = json.load(open('dataset_dev/ham_dev.json'))
@@ -43,10 +50,13 @@ def load_data():
   global y_validation
   y_validation = [0 for _ in range(len(ham_validation))] + [1 for _ in range(len(spam_validation))]
 
-def etapa1():
   vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
+  global X
   X = vectorizer.fit_transform(X_train)
+  global X_val
   X_val = vectorizer.transform(X_validation)
+
+def etapa1():
   clf = DecisionTreeClassifier()
   param_grid = json.load(open('parameters/Trees/decision_tree_params.json'))
   grid_search = GridSearchCV(clf, param_grid=param_grid, scoring='f1', cv=10, n_jobs=-1)
@@ -63,33 +73,29 @@ def etapa2():
   names = [
     'MultinomialNB',
     'BernoulliNB',
-    'KNeighborsClassifier',
-    'RadiusNeighborsClassifier',
-    'NuSVC',
+    # 'KNeighborsClassifier',
+    # 'RadiusNeighborsClassifier',
+    # 'NuSVC',
     'RandomForestClassifier'
   ]
 
   clfs = [
     MultinomialNB(),
     BernoulliNB(),
-    KNeighborsClassifier(),
-    RadiusNeighborsClassifier(),
-    NuSVC(),
+    # KNeighborsClassifier(),
+    # RadiusNeighborsClassifier(),
+    # NuSVC(),
     RandomForestClassifier()
   ]
 
   param_grids = [
     json.load(open('parameters/Bayes/multinomial_bayes_params.json')),
     json.load(open('parameters/Bayes/bernoulli_bayes_params.json')),
-    json.load(open('parameters/Nearest Neighbors/knn_params.json')),
-    json.load(open('parameters/Nearest Neighbors/knn_radius_params.json')),
-    json.load(open('parameters/SVM/nusvc_params.json')),
+    # json.load(open('parameters/Nearest Neighbors/knn_params.json')),
+    # json.load(open('parameters/Nearest Neighbors/knn_radius_params.json')),
+    # json.load(open('parameters/SVM/nusvc_params.json')),
     json.load(open('parameters/Trees/random_forest_params.json'))
   ]
-
-  vectorizer = CountVectorizer(token_pattern='[^\d\W_][\w|\']+', max_features=500)
-  X = vectorizer.fit_transform(X_train)
-  X_val = vectorizer.transform(X_validation)
 
   # El gaussian naive bayes no toma parametros, lo corro sin gridsearch
   clf = GaussianNB()
@@ -115,98 +121,119 @@ def etapa2():
     print classification_report(y_validation, predictions)
 
 def etapa3():
-  pass
-  ##################### FEATURE SELECTION #####################
+  names = [
+    'DecisionTreeClasifier',
+    'MultinomialNB',
+    'BernoulliNB',
+    'RandomForestClassifier',
+    'GaussianNB'
+  ]
 
-  # Umbral de Varianza
-  # Remueve todos los atributos cuya varianza esté por debajo de un cierto umbral, se lo pasas con el parámetro treshold y después le tiras el fit_transform bien peola
+  clfs = [
+    DecisionTreeClassifier(max_features=None, splitter='best', criterion='entropy', max_depth=25),
+    MultinomialNB(alpha=0.0, fit_prior=True),
+    BernoulliNB(binarize=0.0, alpha=0.5, fit_prior=True),
+    RandomForestClassifier(max_features='sqrt', n_estimators=15, bootstrap=False, criterion='entropy', max_depth=None)
+  ]
 
-  #>>> from sklearn.feature_selection import VarianceThreshold
-  #>>> X = [[0, 0, 1], [0, 1, 0], [1, 0, 0], [0, 1, 1], [0, 1, 0], [0, 1, 1]]
-  #>>> sel = VarianceThreshold(threshold=(.8 * (1 - .8)))
-  #>>> sel.fit_transform(X)
-  #array([[0, 1],[1, 0],[0, 0],[1, 1],[1, 0],[1, 1]])
+  clf = GaussianNB()
 
-  #UNIVARIADAS (Hay algunas univariadas un poco más elaboradas que el umbral)
-  #Tods implementan fit y transform
+  print 'Selection'
+  # UNIVARIADA VARIANZA
+  best_scores = [0.0 for _ in range(0, len(clfs)+1)]
+  best_variances = [0.0 for _ in range(0, len(clfs)+1)]
+  variances = [0.15, 0.2, 0.25]
+  for var in variances:
+    sel = VarianceThreshold(threshold=(var))
+    X_new = sel.fit_transform(X.todense())
+    X_val_new = sel.transform(X_val.todense())
 
-  #Select K Best. No más que eso, agarra los mejores K, el default es 10, y toma una score_func que "Function taking two arrays X and y, and returning a pair of arrays (scores, pvalues)".
-  #Creo que es bajo qué criterio decidimos cuál es mejor
-  #sklearn.feature_selection.SelectKBest(score_func=<function f_classif>, k=10)
- 
+    for i in range(0, len(clfs)):
+      clfs[i].fit(X_new, y_train)
+      score = clfs[i].score(X_val_new, y_validation)
+      if(best_scores[i] < score):
+        best_scores[i] = score
+        best_variances[i] = var
 
-  #sklearn.feature_selection.SelectPercentile(score_func=<function f_classif>, percentile=10)
-  #Hace lo mismo pero elije "according to a percentile of the highest scores."   El default es 10
+    clf.fit(X_new, y_train)
+    score = clf.score(X_val_new, y_validation)
+    if(best_scores[len(clfs)] < score):
+      best_scores[len(clfs)] = score
+      best_variances[len(clfs)] = var
 
-  #sklearn.feature_selection.SelectFpr(score_func=<function f_classif>, alpha=0.05)
-  #Este se queda los features segun un test, FPR test stands for False Positive Rate test. Alpha es The highest p-value for features to be kept.
+  for i in range(0, len(clfs)):
+    print str(names[i])
+    print 'Eliminando varianza menor a:', str(best_variances[i])
+    print 'Con Score:', str(best_scores[i])
 
-  #Después está este que combina todos.
-  #sklearn.feature_selection.GenericUnivariateSelect(score_func=<function f_classif>, mode='percentile', param=1e-05)
-  #En "mode" le decis cual usas, tipo 'k_best'.
+  print str(names[len(clfs)])
+  print 'Eliminando varianza menor a:', str(best_variances[len(clfs)])
+  print 'Con Score:', str(best_scores[len(clfs)])
+  print
 
-  #RECURSIVE FEATURE ELIMINATION
-  # sklearn.feature_selection.RFE(estimator, n_features_to_select=None, step=1, estimator_params=None, verbose=0)
-  # estimator es un clasificador--> A supervised learning estimator with a fit method that updates a coef_ attribute that holds the fitted parameters. 
-  #                                 Important features must correspond to high absolute values in the coef_ array.
-  # n_features_to_select es bastante obvio,  si lo dejas en None pone la mitad
-  # Step dice cuantas sacar por iteración. Si pones un real 0 < r < 1 remueve el porcentaje
-  # El estimator params no lo usemos jjaja está deprecated XD: --> Parameters for the external estimator. This attribute is deprecated as of version 0.16 and will be removed in 0.18. 
-  #                                                                Use estimator initialisation or set_params method instead.
+  # # UNIVARIADA PERCENTILES
+  # best_scores = [0.0 for _ in range(0, len(clfs)+1)]
+  # best_percentiles = [0.0 for _ in range(0, len(clfs)+1)]
+  # percentiles = [5, 10, 20, 25, 50]
+  # for per in percentiles:
+  #   sel = SelectPercentile(score_func=f1_score, percentile=per)
+  #   X_new = sel.fit_transform(X.todense(), y_train)
+  #   X_val_new = sel.transform(X_val.todense())
 
-  #>>> from sklearn.datasets import make_friedman1
-  #>>> from sklearn.feature_selection import RFE
-  #>>> from sklearn.svm import SVR
-  #>>> X, y = make_friedman1(n_samples=50, n_features=10, random_state=0)
-  #>>> estimator = SVR(kernel="linear")
-  #>>> selector = RFE(estimator, 5, step=1)
-  #>>> selector = selector.fit(X, y)
-  #>>> selector.support_ 
-  #array([ True,  True,  True,  True,  True,
-  #      False, False, False, False, False], dtype=bool)
-  #>>> selector.ranking_
-  #array([1, 1, 1, 1, 1, 6, 4, 3, 2, 5])
+  #   for i in range(0, len(clfs)):
+  #     clfs[i].fit(X_new, y_train)
+  #     score = clfs[i].score(X_val_new, y_validation)
+  #     if(best_scores[i] < score):
+  #       best_scores[i] = score
+  #       best_percentiles[i] = per
 
+  #   clf.fit(X_new, y_train)
+  #   score = clf.score(X_val_new, y_validation)
+  #   if(best_scores[len(clfs)] < score):
+  #     best_scores[len(clfs)] = score
+  #     best_percentiles[len(clfs)] = per
 
-  ##################### FEATURE TRANSFORMATION #####################
+  # for i in range(0, len(clfs)):
+  #   print str(names[i])
+  #   print 'Usando percentil:', str(best_percentiles[i])
+  #   print 'Con Score:', str(best_scores[i])
 
+  # print str(names[len(clfs)])
+  # print 'Usando percentil:', str(best_percentiles[len(clfs)])
+  # print 'Con Score:', str(best_scores[len(clfs)])
+  # print
 
-  #En PCA mandas PCA(n_components=None, copy=True, whiten=False)
-  #N_COMPONENTS
-  # n_components es básicamente cuántas componentes nos queremos quedar. El default se queda todas y si pones n_components='mle' dice esto
-  		# if n_components == ‘mle’, Minka’s MLE is used to guess the dimension. 
-  # Y si mandas un numero menor a 1, hace esto: select the number of components such that the amount of variance that needs to be explained is greater than the percentage specified by n_components
-  # COPY
-  # El default es TRUE
-  # If False, data passed to fit are overwritten and running fit(X).transform(X) will not yield the expected results, use fit_transform(X) instead. (no entendi bien esto)
-  # WHITEN
-  # El default es FALSE
-  # When True the components_ vectors are divided by n_samples times singular values to ensure uncorrelated outputs with unit component-wise variances. (Tampoco entendí esto, diría que no lo usemos)
+  # print 'Transform'
+  # # PCA
+  # best_scores = [0.0 for _ in range(0, len(clfs)+1)]
+  # best_variance_kept = [0.0 for _ in range(0, len(clfs)+1)]
+  # variances_kept = [0.85, 0.9, 0.95, 0.99]
+  # for var_kept in variances_kept:
+  #   sel = PCA(n_components=var_kept)
+  #   X_new = sel.fit_transform(X.todense())
+  #   X_val_new = sel.transform(X_val.todense())
 
-  #Ejemplito
+  #   for i in range(0, len(clfs)):
+  #     clfs[i].fit(X_new, y_train)
+  #     score = clfs[i].score(X_val_new, y_validation)
+  #     if(best_scores[i] < score):
+  #       best_scores[i] = score
+  #       best_variance_kept[i] = var_kept
 
-  #>>> import numpy as np
-  #>>> from sklearn.decomposition import PCA
-  #>>> X = np.array([[-1, -1], [-2, -1], [-3, -2], [1, 1], [2, 1], [3, 2]])
-  #>>> pca = PCA(n_components=2)
-  #>>> pca.fit(X)
-  #PCA(copy=True, n_components=2, whiten=False)
-  #>>> print(pca.explained_variance_ratio_) 
-  #[ 0.99244...  0.00755...]
+  #   clf.fit(X_new, y_train)
+  #   score = clf.score(X_val_new, y_validation)
+  #   if(best_scores[len(clfs)] < score):
+  #     best_scores[len(clfs)] = score
+  #     best_variance_kept[len(clfs)] = var_kept
 
-  #Metodos
+  # for i in range(0, len(clfs)):
+  #   print str(names[i])
+  #   print 'Guardando porcentaje de varianza:', str(best_variance_kept[i])
+  #   print 'Con Score:', str(best_scores[i])
 
-  #fit_transform(X,y) --> Hace el fit y aplica la reducción de dimensionalidad
-  #transform(X,y) ---> hace solo la reducción.
-  #score(X,y) ---> Return the average log-likelihood of all samples
-  #get_covariance()
-
-  #Atributos
-
-  #Le podes pedir las componentes
-  # n_components_ te tira el numero de componentes (por si usaste el mle o 0 < n_componentes < 1)
-  # explained_variance_ratio_ te tira el "Percentage of variance explained by each of the selected components"
-
+  # print str(names[len(clfs)])
+  # print 'Guardando porcentaje de varianza:', str(best_variance_kept[len(clfs)])
+  # print 'Con Score:', str(best_scores[len(clfs)])
 
 def modo_de_uso():
   print 'Modo de uso:'

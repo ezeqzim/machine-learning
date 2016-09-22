@@ -1,0 +1,18 @@
+Selection
+DecisionTreeClasifier
+Eliminando varianza menor a: 0.2
+Con Score: 0.992222222222
+MultinomialNB
+Eliminando varianza menor a: 0.15
+Con Score: 0.5
+BernoulliNB
+Eliminando varianza menor a: 0.15
+Con Score: 0.934333333333
+RandomForestClassifier
+Eliminando varianza menor a: 0.25
+Con Score: 0.996
+GaussianNB
+Eliminando varianza menor a: 0.15
+Con Score: 0.937111111111
+
+Transform
