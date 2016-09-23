@@ -1,4 +1,4 @@
-Selection
+Selection VarianceThreshold
 DecisionTreeClasifier
 Eliminando varianza menor a: 0.2
 Con Score: 0.992222222222
@@ -15,4 +15,33 @@ GaussianNB
 Eliminando varianza menor a: 0.15
 Con Score: 0.937111111111
 
-Transform
+Selection SelectPercentile
+DecisionTreeClasifier
+Usando percentil: 50
+Con Score: 0.991111111111
+MultinomialNB
+Usando percentil: 10
+Con Score: 0.922333333333
+BernoulliNB
+Usando percentil: 50
+Con Score: 0.936222222222
+RandomForestClassifier
+Usando percentil: 20
+Con Score: 0.995444444444
+GaussianNB
+Usando percentil: 50
+Con Score: 0.933888888889
+
+Transform PCA
+DecisionTreeClasifier
+Guardando porcentaje de varianza: 0.99
+Con Score: 0.950111111111
+BernoulliNB
+Guardando porcentaje de varianza: 0.99
+Con Score: 0.695
+RandomForestClassifier
+Guardando porcentaje de varianza: 0.99
+Con Score: 0.969444444444
+GaussianNB
+Guardando porcentaje de varianza: 0.99
+Con Score: 0.517111111111

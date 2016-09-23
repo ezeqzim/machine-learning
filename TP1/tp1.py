@@ -22,7 +22,6 @@ from sklearn.feature_selection import VarianceThreshold
 from sklearn.feature_selection import SelectPercentile
 from sklearn.feature_selection import RFE
 from sklearn.decomposition import PCA
-from sklearn.metrics import f1_score
 
 X_train = []
 y_train = []
@@ -136,9 +135,10 @@ def etapa3():
     RandomForestClassifier(max_features='sqrt', n_estimators=15, bootstrap=False, criterion='entropy', max_depth=None)
   ]
 
+  # Separamos GaussianNB porque necesita la matriz densa
   clf = GaussianNB()
 
-  print 'Selection'
+  print 'Selection', 'VarianceThreshold'
   # UNIVARIADA VARIANZA
   best_scores = [0.0 for _ in range(0, len(clfs)+1)]
   best_variances = [0.0 for _ in range(0, len(clfs)+1)]
@@ -169,71 +169,78 @@ def etapa3():
   print str(names[len(clfs)])
   print 'Eliminando varianza menor a:', str(best_variances[len(clfs)])
   print 'Con Score:', str(best_scores[len(clfs)])
-  print
+  print ''
 
-  # # UNIVARIADA PERCENTILES
-  # best_scores = [0.0 for _ in range(0, len(clfs)+1)]
-  # best_percentiles = [0.0 for _ in range(0, len(clfs)+1)]
-  # percentiles = [5, 10, 20, 25, 50]
-  # for per in percentiles:
-  #   sel = SelectPercentile(score_func=f1_score, percentile=per)
-  #   X_new = sel.fit_transform(X.todense(), y_train)
-  #   X_val_new = sel.transform(X_val.todense())
+  print 'Selection', 'SelectPercentile'
+  # UNIVARIADA PERCENTILES
+  best_scores = [0.0 for _ in range(0, len(clfs)+1)]
+  best_percentiles = [0.0 for _ in range(0, len(clfs)+1)]
+  percentiles = [5, 10, 20, 25, 50]
+  for per in percentiles:
+    sel = SelectPercentile(percentile=per)
+    X_new = sel.fit_transform(X.todense(), y_train)
+    X_val_new = sel.transform(X_val.todense())
 
-  #   for i in range(0, len(clfs)):
-  #     clfs[i].fit(X_new, y_train)
-  #     score = clfs[i].score(X_val_new, y_validation)
-  #     if(best_scores[i] < score):
-  #       best_scores[i] = score
-  #       best_percentiles[i] = per
+    for i in range(0, len(clfs)):
+      clfs[i].fit(X_new, y_train)
+      score = clfs[i].score(X_val_new, y_validation)
+      if(best_scores[i] < score):
+        best_scores[i] = score
+        best_percentiles[i] = per
 
-  #   clf.fit(X_new, y_train)
-  #   score = clf.score(X_val_new, y_validation)
-  #   if(best_scores[len(clfs)] < score):
-  #     best_scores[len(clfs)] = score
-  #     best_percentiles[len(clfs)] = per
+    clf.fit(X_new, y_train)
+    score = clf.score(X_val_new, y_validation)
+    if(best_scores[len(clfs)] < score):
+      best_scores[len(clfs)] = score
+      best_percentiles[len(clfs)] = per
 
-  # for i in range(0, len(clfs)):
-  #   print str(names[i])
-  #   print 'Usando percentil:', str(best_percentiles[i])
-  #   print 'Con Score:', str(best_scores[i])
+  for i in range(0, len(clfs)):
+    print str(names[i])
+    print 'Usando percentil:', str(best_percentiles[i])
+    print 'Con Score:', str(best_scores[i])
 
-  # print str(names[len(clfs)])
-  # print 'Usando percentil:', str(best_percentiles[len(clfs)])
-  # print 'Con Score:', str(best_scores[len(clfs)])
-  # print
+  print str(names[len(clfs)])
+  print 'Usando percentil:', str(best_percentiles[len(clfs)])
+  print 'Con Score:', str(best_scores[len(clfs)])
+  print ''
 
-  # print 'Transform'
-  # # PCA
-  # best_scores = [0.0 for _ in range(0, len(clfs)+1)]
-  # best_variance_kept = [0.0 for _ in range(0, len(clfs)+1)]
-  # variances_kept = [0.85, 0.9, 0.95, 0.99]
-  # for var_kept in variances_kept:
-  #   sel = PCA(n_components=var_kept)
-  #   X_new = sel.fit_transform(X.todense())
-  #   X_val_new = sel.transform(X_val.todense())
+  print 'Transform', 'PCA'
+  # PCA
+  best_scores = [0.0 for _ in range(0, len(clfs)+1)]
+  best_variance_kept = [0.0 for _ in range(0, len(clfs)+1)]
+  variances_kept = [0.85, 0.9, 0.95, 0.99]
+  for var_kept in variances_kept:
+    sel = PCA(n_components=var_kept)
+    X_new = sel.fit_transform(X.todense())
+    X_val_new = sel.transform(X_val.todense())
 
-  #   for i in range(0, len(clfs)):
-  #     clfs[i].fit(X_new, y_train)
-  #     score = clfs[i].score(X_val_new, y_validation)
-  #     if(best_scores[i] < score):
-  #       best_scores[i] = score
-  #       best_variance_kept[i] = var_kept
+    for i in range(0, len(clfs)):
+      # Paso de largo MultinomialNB no se banca la transformacion de PCA
+      if(i == 1):
+        continue
+      clfs[i].fit(X_new, y_train)
+      score = clfs[i].score(X_val_new, y_validation)
+      if(best_scores[i] < score):
+        best_scores[i] = score
+        best_variance_kept[i] = var_kept
 
-  #   clf.fit(X_new, y_train)
-  #   score = clf.score(X_val_new, y_validation)
-  #   if(best_scores[len(clfs)] < score):
-  #     best_scores[len(clfs)] = score
-  #     best_variance_kept[len(clfs)] = var_kept
+    clf.fit(X_new, y_train)
+    score = clf.score(X_val_new, y_validation)
+    if(best_scores[len(clfs)] < score):
+      best_scores[len(clfs)] = score
+      best_variance_kept[len(clfs)] = var_kept
 
-  # for i in range(0, len(clfs)):
-  #   print str(names[i])
-  #   print 'Guardando porcentaje de varianza:', str(best_variance_kept[i])
-  #   print 'Con Score:', str(best_scores[i])
+  for i in range(0, len(clfs)):
+    # Paso de largo MultinomialNB no se banca la transformacion de PCA
+    if(i == 1):
+      continue
+    print str(names[i])
+    print 'Guardando porcentaje de varianza:', str(best_variance_kept[i])
+    print 'Con Score:', str(best_scores[i])
 
-  # print str(names[len(clfs)])
-  # print 'Guardando porcentaje de varianza:', str(best_variance_kept[len(clfs)])
-  # print 'Con Score:', str(best_scores[len(clfs)])
+  print str(names[len(clfs)])
+  print 'Guardando porcentaje de varianza:', str(best_variance_kept[len(clfs)])
+  print 'Con Score:', str(best_scores[len(clfs)])
 
 def modo_de_uso():
   print 'Modo de uso:'
