@@ -4,6 +4,36 @@ Una vez escogidos los atributos, se discutió qué clasificadores se probarían 
 
 Se decidió utilizar los siguientes clasificadores, variando para cada uno los siguientes parámetros.
 
+\textbf{Gaussian Naive Bayes Classifier}\\
+\textbf{Multinomial Naive Bayes Classifier}
+\begin{itemize}
+	\item \texttt{alpha}: Additive (Laplace/Lidstone) smoothing parameter.\\
+	\texttt{0.0, 0.5, 1.0}
+	\item \texttt{fit\_prior}: Whether to learn class prior probabilities or not. If false, a uniform prior will be used.\\
+	\texttt{true, false}
+\end{itemize}
+\textbf{Bernoulli Naive Bayes Classifier}
+\begin{itemize}
+	\item \texttt{alpha}: Additive (Laplace/Lidstone) smoothing parameter.\\
+	\texttt{0.0, 0.5, 1.0}
+	\item \texttt{fit\_prior}: Whether to learn class prior probabilities or not. If false, a uniform prior will be used.\\
+	\texttt{true, false}
+	\item \texttt{binarize}: Threshold for binarizing (mapping to booleans) of sample features. If None, input is presumed to already consist of binary vectors.\\
+	\texttt{0.0}
+\end{itemize}
+\textbf{Random Forest Classifier}
+\begin{itemize}
+	\item \texttt{n\_estimators}: The number of trees in the forest.\\
+	\texttt{5, 10, 15}
+	\item \texttt{criterion}: The function to measure the quality of a split.\\
+	\texttt{gini, entropy}
+	\item \texttt{max\_features}: The number of features to consider when looking for the best split. If None, use all features.\\
+	\texttt{None, sqrt, log2}
+	\item \texttt{max\_depth}: The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than \texttt{min\_samples\_split} samples.\\
+	\texttt{None, 10, 25, 50}
+	\item \texttt{bootstrap}: Whether bootstrap samples are used when building trees.\\
+	\texttt{true, false}
+\end{itemize}
 %%TODO FRAN, 
 %%Acá básicamente copy+paste del gridsearch y los parámetros que buscaste vos.
 %%Basicamente armate un itemize o enumerate de los distintos clasificadores y para cada uno habla de los atributos que variamos explicando brevemente qué hacen.
