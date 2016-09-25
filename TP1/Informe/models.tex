@@ -1,1 +1,19 @@
 \section{Modelos}
+
+Una vez escogidos los atributos, se discutió qué clasificadores se probarían y qué combinaciones de parámetros para cada uno. Para realizar las corridas se utilizó el \texttt{gridSearch} de \texttt{sklearn}.
+
+Se decidió utilizar los siguientes clasificadores, variando para cada uno los siguientes parámetros.
+
+%%TODO FRAN, 
+%%Acá básicamente copy+paste del gridsearch y los parámetros que buscaste vos.
+%%Basicamente armate un itemize o enumerate de los distintos clasificadores y para cada uno habla de los atributos que variamos explicando brevemente qué hacen.
+
+Antes de comenzar se separó un 10\% de los mails (4500 mails $hm$ y 4500 mails $spam$) para usar como set de validación.
+
+%%TODO EZE
+%%Acá básicamente lo único que te pediría es que cuentes levemente como funciona gridsearch, más que nada para dejar claro que hace cross-validation, que no lo mencionamos nunca por ahora, especificando que la cross-validation no toca los datos de validación.
+
+Luego se procedió a quedarse con la mejor combinación de parámetros para cada clasificador según \texttt{gridSearch}. Para esto se decidió utilizar el score $f1$. Luego se corrió cada uno de los clasificadores con su mejor combinación de parámetros sobre el set de validación.
+
+%%TODO EZE
+%%No se si hablar acá de las cosas que fallaron y hablar en general de las cosas implementativas o si hablar en la sección de resultados. Pero habría que mencionar lo que falló, por qué falló y hablar un poco de tiempos, básicamente hablar bien de arboles y compañía.
