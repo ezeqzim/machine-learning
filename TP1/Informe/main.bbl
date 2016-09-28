@@ -1,3 +1,17 @@
-\begin{thebibliography}{}
+\begin{thebibliography}{1}
+
+\bibitem{parser}
+{Python Email Parser Documentation}.
+\newblock \url{https://docs.python.org/3/library/email.parser.html}.
+
+\bibitem{gridsearch}
+{Sklearn GridSearch Documentation}.
+\newblock
+  \url{http://scikit-learn.org/stable/modules/generated/sklearn.grid_search.GridSearchCV.html#sklearn.grid_search.GridSearchCV}.
+
+\bibitem{multiproblem}
+{Multinomial Naive Bayes}.
+\newblock
+  \url{https://en.wikipedia.org/wiki/Naive_Bayes_classifier#Multinomial_naive_Bayes}.
 
 \end{thebibliography}

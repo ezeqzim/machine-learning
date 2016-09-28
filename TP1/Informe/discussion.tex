@@ -1,1 +1,19 @@
 \section{Discusión}
+
+%ETAPA 1 y 2
+
+Se observ\'o que todos los clasificadores que implementaban alguna variante de \emph{Naive Bayes} tuvieron un rendimiento m\'as bajo que aquellos que implementaban alguna variante de \emph{\'Arboles de decisi\'on}. Esto se debe a que los atributos se tomaron desde la totalidad del texto de los correos, que inclu\'ian \texttt{HEADERs} y archivos adjuntos. Dichos atributos deb\'ian contener alto grado de correlaci\'on entre s\'i, lo que afecta considerablemente a los clasificadores de \emph{Naive Bayes}, mientras que los \emph{\'Arboles de decisi\'on} los consideran atributos no interesantes, y los sit\'uan al fondo del \'arbol, y dado que definimos una profundidad m\'axima en el caso de los \'arboles de decisi\'on, y una cantidad m\'axima de atributos en el caso del \emph{Random Forest}, esos atributos directamente no fueron considerados.
+
+Vale la pena mencionar, que \emph{Multinomial Naive Bayes} obtuvo los peores resultados. Obtuvo un bajo \texttt{recall} para \emph{spam}, que era un resultado no deseado. Conjeturamos que esto se debe a que si existe un atributo y una clase tal que dicho atributo no pertenece a la clase, entonces la probabilidad aproximada ser\'a cero, y esto eliminar\'a el resto de los datos al multiplicarse\textsuperscript{\cite{multiproblem}}, afectando gravemente los resultados.
+
+%ETAPA 3
+
+Tras correr las t\'ecnicas de reducci\'on de la dimensionalidad, se observ\'o que la puntuaci\'on obtenida sobre los datos de validaci\'on del \emph{Decision Tree Classifier} y del \emph{Random Forest Classifier} no mejor\'o, y hasta empeor\'o cuando se utiliz\'o PCA. Suponemos que esta ausencia de mejoras al utilizar selecci\'on de atributos se debe a que los atributos que se eliminaban pose\'ian poca ganancia de informaci\'on, ya eran eliminados por los \'arboles debido a lo mencionado anteriormente, por ser considerados no interesantes.
+
+Los clasificadores de \emph{Naive Bayes} tampoco mostraron mejoras al seleccionar atributos, pero empeoraron considerablemente al utilizar PCA. Se discuti\'o acerca de estos resultados, llegando a una hip\'otesis de que quizas la transformaci\'on realizada aumenta la dependencia entre los atributos resultantes, provocando que \emph{Naive Bayes} funcione peor.
+
+%Tiempos
+
+%%Por que pasa lo que pasa, wtf
+
+Debido a los resultados obtenidos, se decidi\'o utilizar el \emph{Random Forest Classifier} sin aplicar t\'ecnicas de reducci\'on de la dimensionalidad.

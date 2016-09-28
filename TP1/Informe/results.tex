@@ -2,7 +2,56 @@
 
 \subsection{Clasificadores (etapas 1 y 2)}
 
-En esta sección se presentan los resultados de las corridas de cada clasificador con su mejor combinación de parámetros según \texttt{gridSearch}.
+En esta sección se presentan los resultados de las ejecuci\'on de cada clasificador sobre los datos de validaci\'on con su mejor combinación de hiperparámetros según \texttt{GridSearch}.
+
+A cada grupo de hiperpar\'ametros, hay que agregarle aquellos predeterminados de \texttt{Sklearn}.
+
+\subsubsection{Decision Tree}
+Para el \emph{Decision Tree Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+	\itemparam{max\_features}{None}
+	\itemparam{splitter}{best}
+	\itemparam{criterion}{entropy}
+	\itemparam{max\_depth}{25}
+\end{itemize}
+Los resultados fueron los siguientes:
+\ig{Imagenes/Results/DecisionTree.png}
+
+\subsubsection{Gaussian Naive Bayes}
+El \emph{Gaussian Naive Bayes Classifier} no toma ning\'un par\'ametro.
+Los resultados fueron los siguientes:
+\ig{Imagenes/Results/GaussianNaiveBayes.png}
+
+\subsubsection{Multinomial Naive Bayes}
+Para el \emph{Multinomial Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+	\itemparam{alpha}{0.0}
+	\itemparam{fit\_prior}{true}
+\end{itemize}
+Los resultados fueron los siguientes:
+\ig{Imagenes/Results/MultinomialNaiveBayes.png}
+
+\subsubsection{Bernoulli Naive Bayes}
+Para el \emph{Bernoulli Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+	\itemparam{binarize}{0.0}
+	\itemparam{alpha}{0.5}
+	\itemparam{fit\_prior}{true}
+\end{itemize}
+Los resultados fueron los siguientes:
+\ig{Imagenes/Results/BernoulliNaiveBayes.png}
+
+\subsubsection{Random Forest}
+Para el \emph{Random Forest Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+	\itemparam{max\_features}{sqrt}
+	\itemparam{n\_estimators}{15}
+	\itemparam{bootstrap}{false}
+	\itemparam{criterion}{entropy}
+	\itemparam{max\_depth}{None}
+\end{itemize}
+Los resultados fueron los siguientes:
+\ig{Imagenes/Results/RandomForest.png}
 
 %%TODO ALGUIEN
 %%Mencionar efectivamente cual fue la mejor combinación de parámetros para cada clasificador según gridsearch.
@@ -14,3 +63,16 @@ En esta sección se presentan los resultados de las corridas de cada clasificado
 %%Gráficos. Básicamente la idea es que grafiques para todas las cosas que tira el score-report (recall, precision, etc.) cada clasificador. Tipo, un gráfico sería el F1-SCORE para todos, otro gráfico sería PRECISION para todos, etc.
 
 \subsection{Reducción de la dimensionalidad (etapa 3)}
+
+En esta secci\'on se presentan los resultados de las ejecuciones de cada clasificador sobre los datos de validaci\'on utilizando las t\'ecnicas de reducci\'on de la dimensionalidad.
+Se muestra la puntuaci\'on obtenida en la validaci\'on sin utilizar ninguna t\'ecnica (Raw) y utilizando las distintas t\'ecnicas, y para cada t\'ecnica, se muestra el mejor resultado usando los mejor hiperpar\'ametros.
+
+\ig{Imagenes/Results/DecisionTreeReddim.png}
+
+\ig{Imagenes/Results/GaussianNaiveBayesReddim.png}
+
+\ig{Imagenes/Results/MultinomialNaiveBayesReddim.png}
+
+\ig{Imagenes/Results/BernoulliNaiveBayesReddim.png}
+
+\ig{Imagenes/Results/RandomForestReddim.png}

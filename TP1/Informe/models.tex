@@ -1,18 +1,38 @@
 \section{Modelos}
 
-Una vez escogidos los atributos, se discutió qué clasificadores se probarían y qué combinaciones de parámetros para cada uno. Para realizar las corridas se utilizó el \texttt{gridSearch} de \texttt{sklearn}.
+Una vez escogidos los atributos, se discutió qué clasificadores se probarían y qué combinaciones de parámetros que se utilizar\'ian para cada uno. Para ello, se hizo uso de la clase \texttt{GridSearch}\textsuperscript{\cite{gridsearch}}, que nos permite hacer una b\'usqueda exhaustiva en las combinaciones de los hiperpar\'ametros, midiendo la performance con el mecanismo de \emph{10 Fold Cross Validation}.
 
-Se decidió utilizar los siguientes clasificadores, variando para cada uno los siguientes parámetros.
+Luego se procedió a guardar la mejor combinación de hiperparámetros para cada clasificador según \texttt{GridSearch}. Para esto se decidió utilizar el \emph{F1 Score}, pues provee conocimiento sobre la \emph{precision} y el \emph{recall}, teniendo en cuenta que buscamos no fallar en el reconocimiento de un correo de \emph{spam}, es decir, no clasificar \emph{ham} como \emph{spam}.
 
-\textbf{Gaussian Naive Bayes Classifier}\\
-\textbf{Multinomial Naive Bayes Classifier}
+Finalmente, se ejecut\'o cada uno de los clasificadores con su mejor combinación de hiperparámetros sobre el conjunto de validación..
+
+\noindent A continuaci\'on se encuentran listados los clasificadores utilizados, con los distintos par\'ametros utilizados en cada uno, con una breve explicaci\'on de los mismos, proporcionada por \texttt{Sklearn}.
+
+\noindent \textbf{Decision Tree Classifier}
+\begin{itemize}
+	\item \texttt{criterion}: The function to measure the quality of a split. Supported criteria are \emph{gini} for the Gini impurity and \emph{entropy} for the information gain.\\
+	\texttt{gini, entropy}
+	\item \texttt{splitter}: The strategy used to choose the split at each node. Supported strategies are \emph{best} to choose the best split and \emph{random} to choose the best random split.\\
+	\texttt{best, random}
+	\item \texttt{max\_features}: The number of features to consider when looking for the best split\\
+	\texttt{null, sqrt, log2}
+	\item \texttt{max\_depth}: The maximum depth of the tree. If None, then nodes are expanded until all leaves are pure or until all leaves contain less than min\_samples\_split samples. Ignored if max\_leaf\_nodes is not None.\\
+	\texttt{10, 25, 50, null}
+\end{itemize}
+
+\noindent \textbf{Gaussian Naive Bayes Classifier}
+
+No tiene hiperpar\'ametros.
+
+\noindent \textbf{Multinomial Naive Bayes Classifier}
 \begin{itemize}
 	\item \texttt{alpha}: Additive (Laplace/Lidstone) smoothing parameter.\\
 	\texttt{0.0, 0.5, 1.0}
 	\item \texttt{fit\_prior}: Whether to learn class prior probabilities or not. If false, a uniform prior will be used.\\
 	\texttt{true, false}
 \end{itemize}
-\textbf{Bernoulli Naive Bayes Classifier}
+
+\noindent \textbf{Bernoulli Naive Bayes Classifier}
 \begin{itemize}
 	\item \texttt{alpha}: Additive (Laplace/Lidstone) smoothing parameter.\\
 	\texttt{0.0, 0.5, 1.0}
@@ -21,7 +41,8 @@ Se decidió utilizar los siguientes clasificadores, variando para cada uno los s
 	\item \texttt{binarize}: Threshold for binarizing (mapping to booleans) of sample features. If None, input is presumed to already consist of binary vectors.\\
 	\texttt{0.0}
 \end{itemize}
-\textbf{Random Forest Classifier}
+
+\noindent \textbf{Random Forest Classifier}
 \begin{itemize}
 	\item \texttt{n\_estimators}: The number of trees in the forest.\\
 	\texttt{5, 10, 15}
@@ -34,16 +55,52 @@ Se decidió utilizar los siguientes clasificadores, variando para cada uno los s
 	\item \texttt{bootstrap}: Whether bootstrap samples are used when building trees.\\
 	\texttt{true, false}
 \end{itemize}
-%%TODO FRAN, 
-%%Acá básicamente copy+paste del gridsearch y los parámetros que buscaste vos.
-%%Basicamente armate un itemize o enumerate de los distintos clasificadores y para cada uno habla de los atributos que variamos explicando brevemente qué hacen.
 
-Antes de comenzar se separó un 10\% de los mails (4500 mails $hm$ y 4500 mails $spam$) para usar como set de validación.
+\noindent Los siguientes clasificadores fueron considerados, pero se encontraron dificultades temporales y de memoria durante su ejecuci\'on, por lo que no se logr\'o obtener mediciones.
+Puntualmente, la ejecuci\'on de los \emph{Support Vector Classifiers} dur\'o m\'as de 14 horas para una sola combinaci\'on de hiperpar\'ametros. Con \texttt{GridSearch} se deb\'ian ejecutar 60 combinaciones distintas, por lo que se deci\'o no ejecutarlas por falta de tiempo.
+En cuanto a \emph{K Nearest Neighbours Classifiers}, sus ejecuciones retornaron \texttt{Memory Error} en las computadoras en los que fueron ejecutados, por lo que tampoco fueron ejecutados.
 
-%%TODO EZE
-%%Acá básicamente lo único que te pediría es que cuentes levemente como funciona gridsearch, más que nada para dejar claro que hace cross-validation, que no lo mencionamos nunca por ahora, especificando que la cross-validation no toca los datos de validación.
+\noindent \textbf{Nu Support Vector Classifier}
+\begin{itemize}
+  \item \texttt{nu}: An upper bound on the fraction of training errors and a lower bound of the fraction of support vectors. Should be in the interval (0, 1].\\
+  \texttt{0.25, 0.5, 0.75}
+  \item \texttt{kernel}: Specifies the kernel type to be used in the algorithm. It must be one of \emph{linear}, \emph{poly}, \emph{rbf}, \emph{sigmoid}, \emph{precomputed} or a callable. If none is given, \emph{rbf} will be used. If a callable is given it is used to precompute the kernel matrix.\\
+  \texttt{rbf, linear, poly, sigmoid, precomputed}
+  \item \texttt{shrinking}: Whether to use the shrinking heuristic.\\
+  \texttt{true,false}
+  \item \texttt{decision\_function\_shape}: Whether to return a one-vs-rest (\emph{ovr}) ecision function of shape (n\_samples, n\_classes) as all other classifiers, or the original one-vs-one (\emph{ovo}) decision function of libsvm which has shape (n\_samples, n\_classes * (n\_classes - 1) / 2).\\
+  \texttt{ovo, ovr}
+\end{itemize}
 
-Luego se procedió a quedarse con la mejor combinación de parámetros para cada clasificador según \texttt{gridSearch}. Para esto se decidió utilizar el score $f1$. Luego se corrió cada uno de los clasificadores con su mejor combinación de parámetros sobre el set de validación.
+\noindent \textbf{K Nearest Neighbours Classifier}
+\begin{itemize}
+  \item \texttt{n\_neighbors}: Number of neighbors to use by default for k\_neighbors queries.\\
+  \texttt{1, 5, 10}
+  \item \texttt{weights}: Weight function used in prediction.\\
+  \texttt{uniform, distance}
+  \item \texttt{algorithm}: Algorithm used to compute the nearest neighbors.\\
+  \texttt{brute}
+  \item \texttt{metric}: The distance metric to use for the tree. The default metric is minkowski, and with p=2 is equivalent to the standard Euclidean metric.\\
+  \texttt{minkowski}
+  \item \texttt{p}: Power parameter for the Minkowski metric. When p = 1, this is equivalent to using manhattan\_distance (l1), and euclidean\_distance (l2) for p = 2. For arbitrary p, minkowski\_distance (l\_p) is used.\\
+  \texttt{1, 2}
+\end{itemize}
 
-%%TODO EZE
-%%No se si hablar acá de las cosas que fallaron y hablar en general de las cosas implementativas o si hablar en la sección de resultados. Pero habría que mencionar lo que falló, por qué falló y hablar un poco de tiempos, básicamente hablar bien de arboles y compañía.
+\noindent \textbf{K Nearest Neighbours Radius Classifier}
+\begin{itemize}
+  \item \texttt{radius}: Range of parameter space to use by default for :meth \emph{radius\_neighbors} queries.\\
+  \texttt{1.0, 5.0, 10.0}
+  \item \texttt{weights}: Weight function used in prediction.\\
+  \texttt{uniform, distance}
+  \item \texttt{algorithm}: Algorithm used to compute the nearest neighbors\\
+  \texttt{brute}
+  \item \texttt{metric}: The distance metric to use for the tree. The default metric is minkowski, and with p=2 is equivalent to the standard Euclidean metric\\
+  \texttt{minkowski}
+  \item \texttt{p}: Power parameter for the Minkowski metric. When p = 1, this is equivalent to using manhattan\_distance (l1), and euclidean\_distance (l2) for p = 2. For arbitrary p, minkowski\_distance (l\_p) is used.\\
+  \texttt{1, 2}
+  \item \texttt{outlier\_label}: Label, which is given for outlier samples (samples with no neighbors on given radius).\\
+  \texttt{2}
+\end{itemize}
+
+\noindent Antes de comenzar se separó un 10\% de los correos (4500 correos \emph{ham} y 4500 correos \emph{spam}) para usar como datos de validación.
+

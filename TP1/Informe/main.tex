@@ -11,11 +11,15 @@
 \usepackage[nottoc]{tocbibind}
 \usepackage{placeins}
 \usepackage{hyperref}
+\usepackage{graphicx}
 \hypersetup{
     linktoc=all,     %set to all if you want both sections and subsections linked
     linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
 }
 \input{page.layout}
+\newcommand{\ig}[1]{\begin{center}\includegraphics[width=15cm]{#1}\end{center}}
+\newcommand{\itemparam}[2]{\item \texttt{#1}: \texttt{#2}}
+\setlength{\parskip}{1em}
 
 \begin{document}
 \titulo{Trabajo Práctico 1}
@@ -26,7 +30,7 @@
 \materia{Aprendizaje Automático}
 
 \integrante{Ezequiel Zimenspitz}{155/13}{ezeqzim@gmail.com}
-\integrante{Nicolas Donatucci}{LU}{MAIL}
+\integrante{Nicolas Donatucci}{263/13}{nadonatucci@gmail.com}
 \integrante{Francisco Noriega}{660/12}{frannoriega.92@gmail.com}
 
 \maketitle
@@ -40,17 +44,11 @@
 \setcounter{page}{1}
 
 \input{introduccion}
-\newpage
 \input{featureextraction}
-\newpage
 \input{models}
-\newpage
 \input{dimensionredux}
-\newpage
 \input{results}
-\newpage
 \input{discussion}
-
 \bibliographystyle{unsrt}%
 \bibliography{main}
 \end{document}

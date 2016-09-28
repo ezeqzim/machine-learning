@@ -1,1 +1,24 @@
 \section{Reducción de la Dimensionalidad}
+A continuaci\'on se muestran las diferentes t\'ecnicas de reducci\'on de la dimensionalidad utilizadas, junto con sus par\'ametros y una breve explicaci\'on de los mismos, proporcionada por \texttt{Sklearn}.
+
+Los clasificadores utilizaron los mejores par\'ametros obtenidos de la ejecuci\'on de \texttt{GridSearch}, y para cada una de estas t\'ecnicas, se ejecut\'o cada clasificador variando los posibles par\'ametros que las t\'ecnicas pudieran utilizar. Posteriormente se seleccionaron aquellos par\'ametros que obtuvieron los mejores resultados.
+
+Luego se ejecutaron los clasificadores utilizando los par\'ametros seleccionados, sobre los datos de validaci\'on.
+
+Como la transformaci\'on lleva a un espacio no conocido y que contiene valores negativos, no se pudo aplicar PCA con \emph{Multinomial Naive Bayes Classifier} pues este no acepta n\'umeros negativos.
+
+\subsection{Selecci\'on de Atributos}
+\textbf{Variance Threshold}\par
+\texttt{threshold}: Features with a training-set variance lower than this threshold will be removed. The default is to keep all features with non-zero variance, i.e. remove the features that have the same value in all samples. \\
+\indent \texttt{0.15, 0.2, 0.25}\\
+\indent Por debajo de 0.15 no elimina ninguno.\par
+	
+\noindent \textbf{Select Percentiles}\par
+\texttt{percentile}: Percent of features to keep. \\
+\indent \texttt{5, 10, 20, 25, 50}
+
+\subsection{Transformaci\'on de Atributos}
+\textbf{PCA}\par
+\texttt{n\_components}: Number of components to keep. \\
+\indent \texttt{0.85, 0.9, 0.95, 0.99}
+
