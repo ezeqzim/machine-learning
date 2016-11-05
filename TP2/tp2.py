@@ -1,53 +1,71 @@
 import random
+import copy
 
-class TicTacToe:
-    def __init__(self, playerX, playerO):
-        self.board = [' ']*9
+class Board:
+    def __init__(self, row, col):
+        self.row = row
+        self.col = col
+        self.available_moves = [0] * col
+        self.board = [' '] * (row * col)
+
+    def move(self, col, char):
+        self.board[self.transform_move(self.available_moves[col], col)] = char
+        self.available_moves[col] += 1
+
+    def transform_move(self, row, col):
+        return (self.col * row + col)
+
+    def available_moves_filtered(self):
+        return [(self.available_moves[i], i) for i in xrange(0, self.col) if self.available_moves[i] < self.row]
+
+    def player_wins(self, char):
+        return False
+
+    def board_full(self):
+        return len(self.available_moves_filtered()) == 0
+
+class FourInARow:
+    def __init__(self, playerX, playerO, row, col):
         self.playerX, self.playerO = playerX, playerO
         self.playerX_turn = random.choice([True, False])
+        self.board = Board(row, col)
 
     def play_game(self):
-        self.playerX.start_game('X')
-        self.playerO.start_game('O')
+        self.playerX.start_game('X', self.board)
+        self.playerO.start_game('O', self.board)
         while True: #yolo
             if self.playerX_turn:
                 player, char, other_player = self.playerX, 'X', self.playerO
             else:
                 player, char, other_player = self.playerO, 'O', self.playerX
+
             if player.breed == "human":
                 self.display_board()
-            space = player.move(self.board)
-            if self.board[space-1] != ' ': # illegal move
-                player.reward(-99, self.board) # score of shame
-                break
-            self.board[space-1] = char
-            if self.player_wins(char):
+
+            move = player.move(self.board) #(row, col)
+
+#            if self.board[space-1] != ' ': # illegal move
+#                player.reward(-99, self.board.board) # score of shame
+#                break
+            self.board.move(move[1], char)
+
+            if self.board.player_wins(char):
                 player.reward(1, self.board)
                 other_player.reward(-1, self.board)
                 break
-            if self.board_full(): # tie game
+
+            if self.board.board_full(): # tie game
                 player.reward(0.5, self.board)
                 other_player.reward(0.5, self.board)
                 break
+
             other_player.reward(0, self.board)
             self.playerX_turn = not self.playerX_turn
 
-    def player_wins(self, char):
-        for a,b,c in [(0,1,2), (3,4,5), (6,7,8),
-                      (0,3,6), (1,4,7), (2,5,8),
-                      (0,4,8), (2,4,6)]:
-            if char == self.board[a] == self.board[b] == self.board[c]:
-                return True
-        return False
-
-    def board_full(self):
-        return not any([space == ' ' for space in self.board])
-
-    def display_board(self):
-        row = " {} | {} | {}"
-        hr = "\n-----------\n"
-        print (row + hr + row + hr + row).format(*self.board)
-
+#    def display_board(self):
+#        row = " {} | {} | {}"
+#        hr = "\n-----------\n"
+#        print (row + hr + row + hr + row).format(*self.board)
 
 class Player(object):
     def __init__(self):
@@ -62,10 +80,6 @@ class Player(object):
     def reward(self, value, board):
         print "{} rewarded: {}".format(self.breed, value)
 
-    def available_moves(self, board):
-        return [i+1 for i in range(0,9) if board[i] == ' ']
-
-
 class RandomPlayer(Player):
     def __init__(self):
         self.breed = "random"
@@ -77,36 +91,36 @@ class RandomPlayer(Player):
         pass
 
     def move(self, board):
-        return random.choice(self.available_moves(board))
+        return random.choice(board.available_moves_filtered())
 
 class QLearningPlayer(Player):
     def __init__(self, epsilon=0.2, alpha=0.3, gamma=0.9):
         self.breed = "Qlearner"
-        self.harm_humans = False
+        self.harm_humans = True # Fuck Asimov
         self.q = {} # (state, action) keys: Q values
         self.epsilon = epsilon # e-greedy chance of random exploration
         self.alpha = alpha # learning rate
         self.gamma = gamma # discount factor for future rewards
 
-    def start_game(self, char):
-        self.last_board = (' ',)*9
+    def start_game(self, char, board):
+        self.last_board = board
         self.last_move = None
 
     def getQ(self, state, action):
         # encourage exploration; "optimistic" 1.0 initial values
-        if self.q.get((state, action)) is None:
-            self.q[(state, action)] = 1.0
-        return self.q.get((state, action))
+        if self.q.get((tuple(state), action)) is None:
+            self.q[(tuple(state), action)] = 1.0 # Esto se puede modificar!!
+        return self.q.get((tuple(state), action))
 
     def move(self, board):
-        self.last_board = tuple(board)
-        actions = self.available_moves(board)
+        self.last_board = copy.deepcopy(board)
+        actions = board.available_moves_filtered()
 
         if random.random() < self.epsilon: # explore!
             self.last_move = random.choice(actions)
             return self.last_move
 
-        qs = [self.getQ(self.last_board, a) for a in actions]
+        qs = [self.getQ(self.last_board.board, a) for a in actions]
         maxQ = max(qs)
 
         if qs.count(maxQ) > 1:
@@ -121,23 +135,23 @@ class QLearningPlayer(Player):
 
     def reward(self, value, board):
         if self.last_move:
-            self.learn(self.last_board, self.last_move, value, tuple(board))
+            self.learn(self.last_board, self.last_move, value, board)
 
-    def learn(self, state, action, reward, result_state):
-        prev = self.getQ(state, action)
-        maxqnew = max([self.getQ(result_state, a) for a in self.available_moves(state)])
-        self.q[(state, action)] = prev + self.alpha * ((reward + self.gamma*maxqnew) - prev)
+    def learn(self, board_state, action, reward, board_result_state):
+        prev = self.getQ(board_state, action)
+        maxqnew = max([self.getQ(board_result_state.board, a) for a in board_state.available_moves_filtered()])
+        self.q[(tuple(state), action)] = prev + self.alpha * ((reward + self.gamma * maxqnew) - prev)
 
 p1 = QLearningPlayer()
 p2 = QLearningPlayer()
 
-for i in xrange(0,200000):
-    t = TicTacToe(p1, p2)
+for i in xrange(0,2):
+    t = FourInARow(p1, p2, 6, 7)
     t.play_game()
 
-p1 = Player()
-p2.epsilon = 0
+#p1 = Player()
+#p2.epsilon = 0
 
-while True:
-    t = TicTacToe(p1, p2)
-    t.play_game()
+#while True:
+#    t = FourInARow(p1, p2, 6, 7)
+#    t.play_game()
