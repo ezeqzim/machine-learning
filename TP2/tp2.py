@@ -1,15 +1,16 @@
-import random
-import copy
+import random, copy, sys
 
 class Board:
-  def __init__(self, row, col):
+  def __init__(self, row, col, x_to_win):
     self.row = row
     self.col = col
+    self.x_to_win = x_to_win
     self.available_moves = [0] * col
     self.state = [' '] * (col * row)
 
   def move(self, col, char):
     self.state[self.transform_move(self.available_moves[col], col)] = char
+    self.last_move = (self.available_moves[col], col)
     self.available_moves[col] += 1
 
   def transform_move(self, row, col):
@@ -19,28 +20,53 @@ class Board:
     return [(self.available_moves[i], i) for i in xrange(0, self.col) if self.available_moves[i] < self.row]
 
   def player_wins(self, char):
-    for row in xrange(self.row - 1, -1, -1):
-      for col in xrange(0, self.col - 3):
-        if ((self.state[self.transform_move(row, col)] == char) and (self.state[self.transform_move(row, col + 1)] == char) and (self.state[self.transform_move(row, col + 2)] == char) and (self.state[self.transform_move(row, col + 3)] == char)):
+    row = self.last_move[0]
+    col = self.last_move[1]
+    char = self.state[self.transform_move(row, col)]
+    # Horizontal Check
+    count = 0
+    for i in xrange(-self.x_to_win + 1, self.x_to_win):
+      if not (col + i < 0 or col + i >= self.col):
+        if self.state[self.transform_move(row, col + i)] == char:
+          count += 1
+        else:
+          count = 0
+        if count == self.x_to_win:
           return True
 
-    for col in xrange(0, self.col):
-      for row in xrange(self.row - 1, 2, -1):
-        move = self.transform_move(row, col)
-        if ((self.state[self.transform_move(row, col)] == char) and (self.state[self.transform_move(row - 1, col)] == char) and (self.state[self.transform_move(row - 2, col)] == char) and (self.state[self.transform_move(row - 3, col)] == char)):
+    # Vertical Check
+    count = 0
+    for i in xrange(-self.x_to_win + 1, self.x_to_win):
+      if not (row + i < 0 or row + i >= self.row):
+        if self.state[self.transform_move(row + i, col)] == char:
+          count += 1
+        else:
+          count = 0
+        if count == self.x_to_win:
           return True
 
-    for row in xrange(self.row - 1, 2, -1):
-      for col in xrange(0, self.col - 3):
-        move = self.transform_move(row, col)
-        if ((self.state[self.transform_move(row, col)] == char) and (self.state[self.transform_move(row - 1, col + 1)] == char) and (self.state[self.transform_move(row - 2, col + 2)] == char) and (self.state[self.transform_move(row - 3, col + 3)] == char)):
+    # Down Diagonal Check
+    count = 0
+    for i in xrange(-self.x_to_win + 1, self.x_to_win):
+      if ((not (row - i < 0 or row - i >= self.row)) and (not (col + i < 0 or col + i >= self.col))):
+        if self.state[self.transform_move(row - i, col + i)] == char:
+          count += 1
+        else:
+          count = 0
+        if count == self.x_to_win:
           return True
 
-    for row in xrange(self.row - 4, -1, -1):
-      for col in xrange(0, self.col - 3):
-        move = self.transform_move(row, col)
-        if ((self.state[self.transform_move(row, col)] == char) and (self.state[self.transform_move(row + 1, col + 1)] == char) and (self.state[self.transform_move(row + 2, col + 2)] == char) and (self.state[self.transform_move(row + 3, col + 3)] == char)):
+    # Up Diagonal Check
+    count = 0
+    for i in xrange(-self.x_to_win + 1, self.x_to_win):
+      if ((not (row + i < 0 or row + i >= self.row)) and (not (col + i < 0 or col + i >= self.col))):
+        if self.state[self.transform_move(row + i, col + i)] == char:
+          count += 1
+        else:
+          count = 0
+        if count == self.x_to_win:
           return True
+
     return False
 
   def board_full(self):
@@ -55,11 +81,11 @@ class Board:
     bad = col < 0 or col >= self.col
     return bad or self.available_moves[col] == self.row
 
-class FourInARow:
-  def __init__(self, playerX, playerO, row, col):
+class XInARow:
+  def __init__(self, playerX, playerO, row, col, x_to_win):
     self.playerX, self.playerO = playerX, playerO
     self.playerX_turn = random.choice([True, False])
-    self.board = Board(row, col)
+    self.board = Board(row, col, x_to_win)
 
   def play_game(self):
     self.playerX.start_game('X', self.board)
@@ -106,7 +132,7 @@ class Player(object):
     print '\nNew game!'
 
   def move(self, board):
-    col = int(raw_input('Your move (1 to {board.col})? '))
+    col = int(raw_input('Your move (1 to {})? '.format(board.col)))
     col = board.col - col
     if board.illegal_move(col):
       return None
@@ -179,16 +205,70 @@ class QLearningPlayer(Player):
       maxqnew = max(qs)
       self.q[(tuple(board.state), action)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
 
-p1 = QLearningPlayer()
-p2 = QLearningPlayer()
+def modo_de_uso():
+  print "Modo de uso:"
+  print "Los parametros requeridos son #Rows, #Cols, X in a Row to win. Luego"
+  print "1. qq para 2 q learning, indicar #iteraciones. Optional epsilon, alpha, gamma"
+  print "2. qr para 1 q learning y un random, indicar #iteraciones. Optional epsilon, alpha, gamma"
+  print "3. rr para 2 random, indicar #iteraciones"
+  print "4. q para 1 q learning y 1 player"
+  print "5. r para 1 random y 1 player"
+  print "6. pp para 2 player"
+  sys.exit()
 
-for i in xrange(0, 1000000):
-  t = FourInARow(p1, p2, 6, 7)
-  t.play_game()
+def main():
+  if len(sys.argv) < 5:
+    modo_de_uso()
+  else:
+    rows = int(sys.argv[1])
+    cols = int(sys.argv[2])
+    x_to_win = int(sys.argv[3])
 
-p1 = Player()
-p2.epsilon = 0
+    if sys.argv[4] == 'pp':
+      p1 = Player()
+      p2 = Player()
+    elif sys.argv[4] == 'q':
+      p1 = Player()
+      p2 = QLearningPlayer()
+    elif sys.argv[4] == 'r':
+      p1 = Player()
+      p2 = RandomPlayer()
 
-while True:
-   t = FourInARow(p1, p2, 6, 7)
-   t.play_game()
+    elif len(sys.argv) < 6:
+      modo_de_uso()
+
+    else:
+      if len(sys.argv) > 6:
+        epsilon = sys.argv[6]
+      if len(sys.argv) > 7:
+        alpha = sys.argv[7]
+      if len(sys.argv) > 8:
+        gamma = sys.argv[8]
+
+      if sys.argv[4] == 'qq':
+        p1 = QLearningPlayer()
+        p2 = QLearningPlayer()
+      elif sys.argv[4] == 'qr':
+        p1 = QLearningPlayer()
+        p2 = RandomPlayer()
+      elif sys.argv[4] == 'rr':
+        p1 = RandomPlayer()
+        p2 = RandomPlayer()
+      else:
+        modo_de_uso()
+
+      iterations = int(sys.argv[5])
+      for i in xrange(0, iterations):
+        t = XInARow(p1, p2, rows, cols, x_to_win)
+        t.play_game()
+
+      p1 = Player()
+      p2.epsilon = 0
+
+    while True:
+      t = XInARow(p1, p2, rows, cols, x_to_win)
+      t.play_game()
+
+if __name__ == '__main__':
+  main()
+
