@@ -1,4 +1,12 @@
+from __future__ import print_function
 import random, copy, sys
+
+global wins_p1
+global wins_p2
+global ties
+
+def eprint(*args, **kwargs):
+  print(*args, file=sys.stderr, **kwargs)
 
 class Board:
   def __init__(self, row, col, x_to_win):
@@ -75,7 +83,7 @@ class Board:
   def display_board(self):
     row = '| {} |'
     hr = '-----'
-    print ((row * self.col + '\n' + hr * self.col + '\n') * self.row).format(*reversed(self.state))
+    print(((row * self.col + '\n' + hr * self.col + '\n') * self.row).format(*reversed(self.state)))
 
   def illegal_move(self, col):
     bad = col < 0 or col >= self.col
@@ -88,6 +96,10 @@ class XInARow:
     self.board = Board(row, col, x_to_win)
 
   def play_game(self):
+    global wins_p1
+    global wins_p2
+    global ties
+
     self.playerX.start_game('X', self.board)
     self.playerO.start_game('O', self.board)
     while True:
@@ -114,11 +126,16 @@ class XInARow:
       if self.board.player_wins(char):
         player.reward(1, self.board)
         other_player.reward(-1, self.board)
+        if self.playerX_turn:
+          wins_p1 += 1
+        else:
+          wins_p2 += 1
         break
 
       if self.board.board_full(): # tie game
         player.reward(0.5, self.board)
         other_player.reward(0.5, self.board)
+        ties += 1
         break
 
       other_player.reward(0, self.board)
@@ -129,7 +146,7 @@ class Player(object):
     self.breed = 'human'
 
   def start_game(self, char, board):
-    print '\nNew game!'
+    print('\nNew game!')
 
   def move(self, board):
     col = int(raw_input('Your move (1 to {})? '.format(board.col)))
@@ -139,7 +156,7 @@ class Player(object):
     return (board.available_moves[col], col)
 
   def reward(self, value, board):
-    print '{} rewarded: {}'.format(self.breed, value)
+    print('{} rewarded: {}'.format(self.breed, value))
 
 class RandomPlayer(Player):
   def __init__(self):
@@ -203,19 +220,19 @@ class QLearningPlayer(Player):
   def learn(self, board, action, reward, board_result):
     prev = self.getQ(board.state, action)
     qs = [self.getQ(board_result.state, a) for a in board_result.available_moves_filtered()]
-    if not len(qs) == 0:
+    if len(qs) > 0:
       maxqnew = max(qs)
       self.q[(tuple(board.state), action)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
 
 def modo_de_uso():
-  print "Modo de uso:"
-  print "Los parametros requeridos son #Rows, #Cols, X in a Row to win. Luego"
-  print "1. qq para 2 q learning, indicar #iteraciones. Opcional epsilon, alpha, gamma"
-  print "2. qr para 1 q learning y un random, indicar #iteraciones. Opcional epsilon, alpha, gamma"
-  print "3. rr para 2 random, indicar #iteraciones"
-  print "4. q para 1 q learning y 1 player"
-  print "5. r para 1 random y 1 player"
-  print "6. pp para 2 player"
+  print('Modo de uso:')
+  print('Los parametros requeridos son #Rows, #Cols, X in a Row to win. Luego')
+  print('1. qq para 2 q learning, indicar #iteraciones. Opcional epsilon, alpha, gamma')
+  print('2. qr para 1 q learning y un random, indicar #iteraciones. Opcional epsilon, alpha, gamma')
+  print('3. rr para 2 random, indicar #iteraciones')
+  print('4. q para 1 q learning y 1 player')
+  print('5. r para 1 random y 1 player')
+  print('6. pp para 2 player')
   sys.exit()
 
 def main():
@@ -225,6 +242,13 @@ def main():
     rows = int(sys.argv[1])
     cols = int(sys.argv[2])
     x_to_win = int(sys.argv[3])
+
+    global wins_p1
+    wins_p1 = 0
+    global wins_p2
+    wins_p2 = 0
+    global ties
+    ties = 0
 
     if sys.argv[4] == 'pp':
       p1 = Player()
@@ -266,6 +290,7 @@ def main():
       for i in xrange(0, iterations):
         t = XInARow(p1, p2, rows, cols, x_to_win)
         t.play_game()
+        eprint(wins_p1, wins_p2, ties, sep='\t')
 
       p1 = Player()
       p2.epsilon = 0
