@@ -164,7 +164,8 @@ class QLearningPlayer(Player):
     self.gamma = gamma # discount factor for future rewards
 
   def start_game(self, char, board):
-    self.last_board = copy.deepcopy(board)
+    # self.last_board = copy.deepcopy(board)
+    self.last_board = board
     self.last_move = None
 
   def getQ(self, state, action):
@@ -174,7 +175,8 @@ class QLearningPlayer(Player):
     return self.q.get((tuple(state), self.last_board.transform_move(action[0], action[1])))
 
   def move(self, board):
-    self.last_board = copy.deepcopy(board)
+    # self.last_board = copy.deepcopy(board)
+    self.last_board = board
     actions = board.available_moves_filtered()
 
     if random.random() < self.epsilon: # explore!
@@ -208,8 +210,8 @@ class QLearningPlayer(Player):
 def modo_de_uso():
   print "Modo de uso:"
   print "Los parametros requeridos son #Rows, #Cols, X in a Row to win. Luego"
-  print "1. qq para 2 q learning, indicar #iteraciones. Optional epsilon, alpha, gamma"
-  print "2. qr para 1 q learning y un random, indicar #iteraciones. Optional epsilon, alpha, gamma"
+  print "1. qq para 2 q learning, indicar #iteraciones. Opcional epsilon, alpha, gamma"
+  print "2. qr para 1 q learning y un random, indicar #iteraciones. Opcional epsilon, alpha, gamma"
   print "3. rr para 2 random, indicar #iteraciones"
   print "4. q para 1 q learning y 1 player"
   print "5. r para 1 random y 1 player"
@@ -238,18 +240,21 @@ def main():
       modo_de_uso()
 
     else:
+      epsilon = 0.2
+      alpha = 0.3
+      gamma = 0.9
       if len(sys.argv) > 6:
-        epsilon = sys.argv[6]
+        epsilon = float(sys.argv[6])
       if len(sys.argv) > 7:
-        alpha = sys.argv[7]
+        alpha = float(sys.argv[7])
       if len(sys.argv) > 8:
-        gamma = sys.argv[8]
+        gamma = float(sys.argv[8])
 
       if sys.argv[4] == 'qq':
-        p1 = QLearningPlayer()
-        p2 = QLearningPlayer()
+        p1 = QLearningPlayer(epsilon, alpha, gamma)
+        p2 = QLearningPlayer(epsilon, alpha, gamma)
       elif sys.argv[4] == 'qr':
-        p1 = QLearningPlayer()
+        p1 = QLearningPlayer(epsilon, alpha, gamma)
         p2 = RandomPlayer()
       elif sys.argv[4] == 'rr':
         p1 = RandomPlayer()
