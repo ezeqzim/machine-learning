@@ -120,8 +120,8 @@ class XInARow:
       self.board.move(move[1], char)
 
       if self.board.player_wins(char):
-        player.reward(10, self.board.state)
-        other_player.reward(-20, self.board.state)
+        player.reward(1, self.board.state)
+        other_player.reward(-1, self.board.state)
         if self.playerX_turn:
           wins_p1 += 1
         else:
@@ -177,8 +177,8 @@ class QLearningPlayer(Player):
     self.gamma = gamma # discount factor for future rewards
 
   def start_game(self, char, board):
-    # self.last_board = copy.deepcopy(board)
-    self.last_board = board
+    self.last_board = copy.deepcopy(board)
+    # self.last_board = board
     self.last_move = None
 
   def getQ(self, state, action):
@@ -188,8 +188,8 @@ class QLearningPlayer(Player):
     return self.q.get((tuple(state), self.last_board.transform_move(action[0], action[1])))
 
   def move(self, board):
-    # self.last_board = copy.deepcopy(board)
-    self.last_board = board
+    self.last_board = copy.deepcopy(board)
+    # self.last_board = board
     actions = board.available_moves_filtered()
 
     if random.random() < self.epsilon: # explore!
@@ -215,10 +215,8 @@ class QLearningPlayer(Player):
 
   def learn(self, reward, result_state):
     prev = self.getQ(self.last_board.state, self.last_move)
-    qs = [self.getQ(result_state, a) for a in self.last_board.available_moves_filtered()]
-    if len(qs) > 0:
-      maxqnew = max(qs)
-      self.q[(tuple(self.last_board.state), self.last_move)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
+    maxqnew = max([self.getQ(result_state, a) for a in self.last_board.available_moves_filtered()])
+    self.q[(tuple(self.last_board.state), self.last_move)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
 
 def modo_de_uso():
   print 'Modo de uso:'
@@ -310,7 +308,7 @@ def main(**kwargs):
     t = XInARow(p1, p2, rows, cols, x_to_win)
     t.play_game()
     # print >> sys.stderr, str(wins_p1) + '\t' + str(wins_p2) + '\t' + str(ties)
-    print >> str(wins_p2 - wins_p1)
+    print >> sys.stderr, str(wins_p2 - wins_p1) + '\t' + str(wins_p1+wins_p2+ties)
 
   p1 = Player()
   try:
