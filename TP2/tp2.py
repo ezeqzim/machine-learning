@@ -114,14 +114,14 @@ class XInARow:
       move = player.move(self.board) #(row, col)
 
       if move is None: # illegal move ONLY FOR REAL LIFE PLAYER
-        player.reward(-99, self.board) # score of shame
+        player.reward(-99, self.board.state) # score of shame
         break
 
       self.board.move(move[1], char)
 
       if self.board.player_wins(char):
-        player.reward(1, self.board)
-        other_player.reward(-1, self.board)
+        player.reward(10, self.board.state)
+        other_player.reward(-20, self.board.state)
         if self.playerX_turn:
           wins_p1 += 1
         else:
@@ -129,12 +129,12 @@ class XInARow:
         break
 
       if self.board.board_full(): # tie game
-        player.reward(0.5, self.board)
-        other_player.reward(0.5, self.board)
+        player.reward(0.5, self.board.state)
+        other_player.reward(0.5, self.board.state)
         ties += 1
         break
 
-      other_player.reward(0, self.board)
+      other_player.reward(0, self.board.state)
       self.playerX_turn = not self.playerX_turn
 
 class Player(object):
@@ -209,92 +209,120 @@ class QLearningPlayer(Player):
     self.last_move = actions[i]
     return actions[i]
 
-  def reward(self, value, board):
+  def reward(self, value, state):
     if self.last_move:
-      self.learn(self.last_board, self.last_move, value, board)
+      self.learn(value, state)
 
-  def learn(self, board, action, reward, board_result):
-    prev = self.getQ(board.state, action)
-    qs = [self.getQ(board_result.state, a) for a in board_result.available_moves_filtered()]
+  def learn(self, reward, result_state):
+    prev = self.getQ(self.last_board.state, self.last_move)
+    qs = [self.getQ(result_state, a) for a in self.last_board.available_moves_filtered()]
     if len(qs) > 0:
       maxqnew = max(qs)
-      self.q[(tuple(board.state), action)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
+      self.q[(tuple(self.last_board.state), self.last_move)] = prev + self.alpha * (reward + self.gamma * maxqnew - prev)
 
 def modo_de_uso():
   print 'Modo de uso:'
-  print 'Los parametros requeridos son #Rows, #Cols, X in a Row to win. Luego'
-  print '1. qq para 2 q learning, indicar #iteraciones. Opcional epsilon, alpha, gamma'
-  print '2. qr para 1 q learning y un random, indicar #iteraciones. Opcional epsilon, alpha, gamma'
-  print '3. rr para 2 random, indicar #iteraciones'
-  print '4. q para 1 q learning y 1 player'
-  print '5. r para 1 random y 1 player'
-  print '6. pp para 2 player'
+  print 'rows= cols= X= iter= mode='
+  print 'Mode = qq, qr, rr, q, r, pp (q = q learning, r = random, p = player'
+  print 'Si hay 1 q learning epsilon= alpha= gamma='
+  print 'Si hay 2 q learning epsilon1= alpha1= gamma=1 epsilon2= alpha2= gamma2='
   sys.exit()
 
-def main():
-  if len(sys.argv) < 5:
+def main(**kwargs):
+  try:
+    rows = int(kwargs['rows'])
+    cols = int(kwargs['cols'])
+    x_to_win = int(kwargs['X'])
+    play_mode = kwargs['mode']
+  except:
     modo_de_uso()
-  else:
-    rows = int(sys.argv[1])
-    cols = int(sys.argv[2])
-    x_to_win = int(sys.argv[3])
 
-    global wins_p1
-    wins_p1 = 0
-    global wins_p2
-    wins_p2 = 0
-    global ties
-    ties = 0
+  global wins_p1
+  wins_p1 = 0
+  global wins_p2
+  wins_p2 = 0
+  global ties
+  ties = 0
 
-    if sys.argv[4] == 'pp':
-      p1 = Player()
-      p2 = Player()
-    elif sys.argv[4] == 'q':
-      p1 = Player()
-      p2 = QLearningPlayer()
-    elif sys.argv[4] == 'r':
-      p1 = Player()
-      p2 = RandomPlayer()
+  try:
+    iterations = int(kwargs['iter'])
+  except:
+    modo_de_uso()
 
-    elif len(sys.argv) < 6:
-      modo_de_uso()
-
-    else:
+  if play_mode == 'pp':
+    p1 = Player()
+    p2 = Player()
+  elif play_mode == 'q':
+    p1 = Player()
+    p2 = QLearningPlayer()
+  elif play_mode == 'r':
+    p1 = Player()
+    p2 = RandomPlayer()
+  elif play_mode == 'qq':
+    try:
+      epsilon1 = float(kwargs['epsilon1'])
+    except:
+      epsilon1 = 0.2
+    try:
+      alpha1 = float(kwargs['alpha1'])
+    except:
+      alpha1 = 0.3
+    try:
+      gamma1 = float(kwargs['gamma1'])
+    except:
+      gamma1 = 0.9
+    try:
+      epsilon2 = float(kwargs['epsilon2'])
+    except:
+      epsilon2 = 0.2
+    try:
+      alpha2 = float(kwargs['alpha2'])
+    except:
+      alpha2 = 0.3
+    try:
+      gamma2 = float(kwargs['gamma2'])
+    except:
+      gamma2 = 0.9
+    p1 = QLearningPlayer(epsilon1, alpha1, gamma1)
+    p2 = QLearningPlayer(epsilon2, alpha2, gamma2)
+  elif play_mode == 'rq':
+    try:
+      epsilon = float(kwargs['epsilon'])
+    except:
       epsilon = 0.2
+    try:
+      alpha = float(kwargs['alpha'])
+    except:
       alpha = 0.3
+    try:
+      gamma = float(kwargs['gamma'])
+    except:
       gamma = 0.9
-      if len(sys.argv) > 6:
-        epsilon = float(sys.argv[6])
-      if len(sys.argv) > 7:
-        alpha = float(sys.argv[7])
-      if len(sys.argv) > 8:
-        gamma = float(sys.argv[8])
+    p1 = RandomPlayer()
+    p2 = QLearningPlayer(epsilon, alpha, gamma)
+  elif play_mode == 'rr':
+    p1 = RandomPlayer()
+    p2 = RandomPlayer()
+  else:
+    modo_de_uso()
 
-      if sys.argv[4] == 'qq':
-        p1 = QLearningPlayer(epsilon, alpha, gamma)
-        p2 = QLearningPlayer(epsilon, alpha, gamma)
-      elif sys.argv[4] == 'qr':
-        p1 = QLearningPlayer(epsilon, alpha, gamma)
-        p2 = RandomPlayer()
-      elif sys.argv[4] == 'rr':
-        p1 = RandomPlayer()
-        p2 = RandomPlayer()
-      else:
-        modo_de_uso()
+  for i in xrange(0, iterations):
+    t = XInARow(p1, p2, rows, cols, x_to_win)
+    t.play_game()
+    # print >> sys.stderr, str(wins_p1) + '\t' + str(wins_p2) + '\t' + str(ties)
+    print >> str(wins_p2 - wins_p1)
 
-      iterations = int(sys.argv[5])
-      for i in xrange(0, iterations):
-        t = XInARow(p1, p2, rows, cols, x_to_win)
-        t.play_game()
-        print >> sys.stderr, str(wins_p1) + '\t' + str(wins_p2) + '\t' + str(ties)
+  p1 = Player()
+  try:
+    p2.epsilon = 0
+  except:
+    pass
 
-      p1 = Player()
-      p2.epsilon = 0
-
-    while True:
-      t = XInARow(p1, p2, rows, cols, x_to_win)
-      t.play_game()
+  while True:
+    t = XInARow(p1, p2, rows, cols, x_to_win)
+    t.play_game()
 
 if __name__ == '__main__':
-  main()
+  kwargs = dict(x.split('=', 1) for x in sys.argv[1:] if '=' in x)
+  main(**kwargs)
 
