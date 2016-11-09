@@ -31,8 +31,7 @@ class XInARow:
       move = player.move(self.board)
 
       if move is None: # illegal move ONLY FOR REAL LIFE PLAYER
-        #player.reward(-99, self.board.state) # score of shame
-        player.reward(-99, self.board)
+        player.reward(-99, self.board) # score of shame
         break
 
       self.board.move(move, char)
@@ -135,15 +134,15 @@ def main(**kwargs):
   for i in xrange(1, iterations + 1):
     t = XInARow(p1, p2, rows, cols, x_to_win)
     t.play_game()
-    # print >> sys.stderr, str(p1.wins) + '\t' + str(p2.wins) + '\t' + str(ties)
     window = 500.0
     if i % window == 0:
-      percentage_p1 = 100 * float(p1.wins) / i
-      percentage_p2 = 100 * float(p2.wins) / i
+      percentage_p1 = 100 * float(p1.wins) / window
+      percentage_p2 = 100 * float(p2.wins) / window
       plotP1.append(percentage_p1)
       plotP2.append(percentage_p2)
-      print >> sys.stderr, str(percentage_p1) + '\t' + str(i)
-      print >> sys.stderr, str(percentage_p2) + '\t' + str(i)
+      print >> sys.stderr, str(percentage_p1) + '\t' + ' ' + str(percentage_p2) + '\t' + str(i)
+      p1.wins = 0
+      p2.wins = 0
   p1 = Player()
 
   xax = np.arange(0.0, float(iterations), window)
