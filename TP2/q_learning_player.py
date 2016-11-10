@@ -21,9 +21,6 @@ class QLearningPlayer(Player):
     if self.q.get((tuple(state), action)) is None:
         self.q[(tuple(state), action)] = 1.0 # Esto se puede modificar!!
     return self.q.get((tuple(state), action))
-    # if self.q.get((tuple(state), self.last_state.transform_move(action[0], action[1]))) is None:
-    #     self.q[(tuple(state), self.last_state.transform_move(action[0], action[1]))] = 1.0 # Esto se puede modificar!!
-    # return self.q.get((tuple(state), self.last_state.transform_move(action[0], action[1])))
 
   def move(self, board):
     self.last_state = copy.deepcopy(board.state)
@@ -39,16 +36,16 @@ class QLearningPlayer(Player):
 
     if qs.count(maxQ) > 1:
       # more than 1 best option; choose among them randomly
-      i = random.choice([j for j in range(len(actions)) if qs[j] == maxQ])
+      i = random.choice([i for i in range(len(actions)) if qs[i] == maxQ])
     else:
       i = qs.index(maxQ)
 
     self.last_move = actions[i]
     return actions[i]
 
-  def reward(self, value, state):
+  def reward(self, value, board):
     if self.last_move:
-      self.learn(value, state)
+      self.learn(value, board)
 
   def learn(self, reward, result_board):
     prev = self.getQ(self.last_state, self.last_move)

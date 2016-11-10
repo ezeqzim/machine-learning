@@ -1,62 +1,75 @@
 import random, sys, readline
 import numpy as np
 import matplotlib.pyplot as plt
-from board import Board
+from x_in_a_row import XInARow
 from player import Player
 from random_player import RandomPlayer
 from q_learning_player import QLearningPlayer
 
-class XInARow:
-  def __init__(self, playerX, playerO, row, col, x_to_win):
-    self.playerX, self.playerO = playerX, playerO
-    self.playerX_turn = random.choice([True, False])
-    self.board = Board(row, col, x_to_win)
-
-  def play_game(self):
-    self.playerX.start_game('X', self.board.state)
-    self.playerO.start_game('O', self.board.state)
-    while True:
-      if self.playerX_turn:
-        player = self.playerX
-        char = 'X'
-        other_player = self.playerO
-      else:
-        player = self.playerO
-        char = 'O'
-        other_player = self.playerX
-
-      if player.breed == 'human':
-        self.board.display_board()
-
-      move = player.move(self.board)
-
-      if move is None: # illegal move ONLY FOR REAL LIFE PLAYER
-        player.reward(-99, self.board) # score of shame
-        break
-
-      self.board.move(move, char)
-
-      if self.board.player_wins(char):
-        player.reward(1, self.board)
-        other_player.reward(-1, self.board)
-        player.wins += 1
-        break
-
-      if self.board.board_full(): # tie game
-        player.reward(0.5, self.board)
-        other_player.reward(0.5, self.board)
-        break
-
-      other_player.reward(0, self.board)
-      self.playerX_turn = not self.playerX_turn
-
 def modo_de_uso():
   print 'Modo de uso:'
-  print 'rows= cols= X= iter= mode='
-  print 'Mode = qq, qr, rr, q, r, pp (q = q learning, r = random, p = player'
-  print 'Si hay 1 q learning epsilon= alpha= gamma='
+  print 'rows= cols= X= mode= iter= filename='
+  print 'Mode = exp#'
   print 'Si hay 2 q learning epsilon1= alpha1= gamma=1 epsilon2= alpha2= gamma2='
   sys.exit()
+
+def plotGraph(iterations, window, plotP1, plotP2, filename, label1, label2):
+  xax = np.arange(0.0, float(iterations), window)
+  plt.plot(xax, plotP1, 'r-', label=label1)
+  plt.plot(xax, plotP2, 'b-', label=label2)
+  plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc=3, ncol=2, mode="expand", borderaxespad=0.)
+  plt.savefig(filename)
+  plt.clf()
+
+def run(rows, cols, x_to_win, iterations, p1, p2, filename):
+  plotP1 = []
+  plotP2 = []
+  plotAcumP1 = []
+  plotAcumP2 = []
+  winsP1Acum = 0.0
+  winsP2Acum = 0.0
+  for i in xrange(1, iterations + 1):
+    t = XInARow(p1, p2, rows, cols, x_to_win)
+    t.play_game()
+    window = 500.0
+    if i % window == 0:
+      percentage_p1 = 100 * float(p1.wins) / window
+      percentage_p2 = 100 * float(p2.wins) / window
+      plotP1.append(percentage_p1)
+      plotP2.append(percentage_p2)
+      print >> sys.stderr, str(percentage_p1) + '\t' + str(percentage_p2) + '\t' + str(i)
+      winsP1Acum += p1.wins
+      winsP2Acum += p2.wins
+      plotAcumP1.append(100 * float(winsP1Acum) / i)
+      plotAcumP2.append(100 * float(winsP2Acum) / i)
+      p1.wins = 0
+      p2.wins = 0
+
+  plotGraph(iterations, window, plotP1, plotP2, filename, p1.__class__.__name__, p2.__class__.__name__)
+  plotGraph(iterations, window, plotAcumP1, plotAcumP2, filename + '_acum', p1.__class__.__name__, p2.__class__.__name__)
+
+def exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename):
+  q_player = QLearningPlayer(epsilon, alpha, gamma)
+  random_player = RandomPlayer()
+  run(rows, cols, x_to_win, iterations, q_player, random_player, filename)
+
+def exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename):
+  q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
+  q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
+  run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_training')
+  random_player = RandomPlayer()
+  run(rows, cols, x_to_win, iterations, q_player1, random_player, filename + '_p1_test')
+  run(rows, cols, x_to_win, iterations, q_player2, random_player, filename + '_p2_test')
+
+def exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename):
+  q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
+  q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
+  run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_training')
+  q_player3 = QLearningPlayer()
+  run(rows, cols, x_to_win, iterations, q_player1, q_player3, filename + '_p1_test')
+  q_player4 = QLearningPlayer()
+  run(rows, cols, x_to_win, iterations, q_player2, q_player4, filename + '_p2_test')
+
 
 def main(**kwargs):
   try:
@@ -64,24 +77,26 @@ def main(**kwargs):
     cols = int(kwargs['cols'])
     x_to_win = int(kwargs['X'])
     play_mode = kwargs['mode']
-  except:
-    modo_de_uso()
-
-  try:
     iterations = int(kwargs['iter'])
+    filename = kwargs['filename']
   except:
     modo_de_uso()
 
-  if play_mode == 'pp':
-    p1 = Player()
-    p2 = Player()
-  elif play_mode == 'q':
-    p1 = Player()
-    p2 = QLearningPlayer()
-  elif play_mode == 'r':
-    p1 = Player()
-    p2 = RandomPlayer()
-  elif play_mode == 'qq':
+  if play_mode == '1':
+    try:
+      epsilon = float(kwargs['epsilon'])
+    except:
+      epsilon = 0.2
+    try:
+      alpha = float(kwargs['alpha'])
+    except:
+      alpha = 0.3
+    try:
+      gamma = float(kwargs['gamma'])
+    except:
+      gamma = 0.9
+    exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename)
+  elif play_mode == '2' or play_mode == '3':
     try:
       epsilon1 = float(kwargs['epsilon1'])
     except:
@@ -106,57 +121,23 @@ def main(**kwargs):
       gamma2 = float(kwargs['gamma2'])
     except:
       gamma2 = 0.9
-    p1 = QLearningPlayer(epsilon1, alpha1, gamma1)
-    p2 = QLearningPlayer(epsilon2, alpha2, gamma2)
-  elif play_mode == 'rq':
-    try:
-      epsilon = float(kwargs['epsilon'])
-    except:
-      epsilon = 0.2
-    try:
-      alpha = float(kwargs['alpha'])
-    except:
-      alpha = 0.3
-    try:
-      gamma = float(kwargs['gamma'])
-    except:
-      gamma = 0.9
-    p1 = RandomPlayer()
-    p2 = QLearningPlayer(epsilon, alpha, gamma)
-  elif play_mode == 'rr':
-    p1 = RandomPlayer()
-    p2 = RandomPlayer()
+    if(play_mode == '2'):
+      exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
+    else:
+      exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
   else:
     modo_de_uso()
 
-  plotP1 = []
-  plotP2 = []
-  for i in xrange(1, iterations + 1):
-    t = XInARow(p1, p2, rows, cols, x_to_win)
-    t.play_game()
-    window = 500.0
-    if i % window == 0:
-      percentage_p1 = 100 * float(p1.wins) / window
-      percentage_p2 = 100 * float(p2.wins) / window
-      plotP1.append(percentage_p1)
-      plotP2.append(percentage_p2)
-      print >> sys.stderr, str(percentage_p1) + '\t' + ' ' + str(percentage_p2) + '\t' + str(i)
-      p1.wins = 0
-      p2.wins = 0
-  p1 = Player()
+  # try:
+  #   p1 = Player()
+  #   try:
+  #     p2.epsilon = 0
+  #   except:
+  #     pass
 
-  xax = np.arange(0.0, float(iterations), window)
-  plt.plot(xax, plotP1, 'r-', xax, plotP2, 'b-')
-  plt.show()
-
-  try:
-    p2.epsilon = 0
-  except:
-    pass
-
-  while True:
-    t = XInARow(p1, p2, rows, cols, x_to_win)
-    t.play_game()
+  # while True:
+  #   t = XInARow(p1, p2, rows, cols, x_to_win)
+  #   t.play_game()
 
 if __name__ == '__main__':
   kwargs = dict(x.split('=', 1) for x in sys.argv[1:] if '=' in x)
