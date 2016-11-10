@@ -11,6 +11,7 @@ def modo_de_uso():
   print 'rows= cols= X= mode= iter= filename='
   print 'Mode = exp#'
   print 'Si hay 2 q learning epsilon1= alpha1= gamma=1 epsilon2= alpha2= gamma2='
+  print 'Para jugar contra el Q player entrenado, manual=True'
   sys.exit()
 
 def plotGraph(iterations, window, plotP1, plotP2, filename, label1, label2):
@@ -48,28 +49,36 @@ def run(rows, cols, x_to_win, iterations, p1, p2, filename):
   plotGraph(iterations, window, plotP1, plotP2, filename, p1.__class__.__name__, p2.__class__.__name__)
   plotGraph(iterations, window, plotAcumP1, plotAcumP2, filename + '_acum', p1.__class__.__name__, p2.__class__.__name__)
 
+  return [winsP1Acum, winsP2Acum]
+
+def best_player(p1, p2, winsP1Acum, winsP2Acum):
+  return p1 if winsP1Acum >= winsP2Acum else p2
+
 def exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename):
   q_player = QLearningPlayer(epsilon, alpha, gamma)
   random_player = RandomPlayer()
   run(rows, cols, x_to_win, iterations, q_player, random_player, filename)
+  return q_player
 
 def exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename):
   q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
   q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
   run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_training')
   random_player = RandomPlayer()
-  run(rows, cols, x_to_win, iterations, q_player1, random_player, filename + '_p1_test')
-  run(rows, cols, x_to_win, iterations, q_player2, random_player, filename + '_p2_test')
+  statsQ1R = run(rows, cols, x_to_win, iterations, q_player1, random_player, filename + '_p1_test')
+  statsQ2R = run(rows, cols, x_to_win, iterations, q_player2, random_player, filename + '_p2_test')
+  return best_player(q_player1, q_player2, statsQ1R[0], statsQ2R[0])
 
 def exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename):
   q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
   q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
-  run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_training')
+  statsQ1Q2 = run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_p1_p2_training')
+  best_pl = best_player(q_player1, q_player2, statsQ1Q2[0], statsQ1Q2[1])
   q_player3 = QLearningPlayer()
-  run(rows, cols, x_to_win, iterations, q_player1, q_player3, filename + '_p1_test')
-  q_player4 = QLearningPlayer()
-  run(rows, cols, x_to_win, iterations, q_player2, q_player4, filename + '_p2_test')
-
+  run(rows, cols, x_to_win, iterations, best_pl, q_player3, filename + '_best_p3_training')
+  random_player = RandomPlayer()
+  run(rows, cols, x_to_win, iterations, q_player3, random_player, filename + '_p3_random_test')
+  return q_player3
 
 def main(**kwargs):
   try:
@@ -95,7 +104,7 @@ def main(**kwargs):
       gamma = float(kwargs['gamma'])
     except:
       gamma = 0.9
-    exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename)
+    exp_player = exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename)
   elif play_mode == '2' or play_mode == '3':
     try:
       epsilon1 = float(kwargs['epsilon1'])
@@ -122,22 +131,21 @@ def main(**kwargs):
     except:
       gamma2 = 0.9
     if(play_mode == '2'):
-      exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
+      exp_player = exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
     else:
-      exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
+      exp_player = exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename)
   else:
     modo_de_uso()
 
-  # try:
-  #   p1 = Player()
-  #   try:
-  #     p2.epsilon = 0
-  #   except:
-  #     pass
-
-  # while True:
-  #   t = XInARow(p1, p2, rows, cols, x_to_win)
-  #   t.play_game()
+  try:
+    kwargs['manual']
+    player = Player()
+    exp_player.epsilon = 0
+    while True:
+      t = XInARow(player, exp_player, rows, cols, x_to_win)
+      t.play_game()
+  except:
+    pass
 
 if __name__ == '__main__':
   kwargs = dict(x.split('=', 1) for x in sys.argv[1:] if '=' in x)
