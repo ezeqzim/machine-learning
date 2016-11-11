@@ -74,8 +74,10 @@ def exp3(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, a
   q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
   statsQ1Q2 = run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_p1_p2_training')
   best_pl = best_player(q_player1, q_player2, statsQ1Q2[0], statsQ1Q2[1])
+  best_pl.epsilon = 0
   q_player3 = QLearningPlayer()
   run(rows, cols, x_to_win, iterations, best_pl, q_player3, filename + '_best_p3_training')
+  q_player3.epsilon = 0
   random_player = RandomPlayer()
   run(rows, cols, x_to_win, iterations, q_player3, random_player, filename + '_p3_random_test')
   return q_player3
