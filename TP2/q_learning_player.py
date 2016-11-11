@@ -13,7 +13,6 @@ class QLearningPlayer(Player):
 
   def start_game(self, char, state):
     self.last_state = copy.deepcopy(state)
-    # self.last_state = state
     self.last_move = None
 
   def getQ(self, state, action):
@@ -24,7 +23,6 @@ class QLearningPlayer(Player):
 
   def move(self, board):
     self.last_state = copy.deepcopy(board.state)
-    # self.last_state = board.state
     actions = board.available_moves_filtered()
 
     if random.random() < self.epsilon: # explore!
