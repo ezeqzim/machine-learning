@@ -1,1 +1,19 @@
 \subsection{Experimento 1}
+
+Este experimento consiste en entrenar un Q-Learning frente a un Random. Lo ejecutamos durante un mill\'on de iteraciones y graficamos los resultados.
+
+Dada la pregunta planteada para este experimento, esperamos que el Q-Learning aprenda r\'apidamente a ganarle a un Random consistentemente.
+
+Este gr\'afico muestra el porcentaje de victorias promediadas en intervalos de 500 iteraciones. Se puede ver que con el correr del entrenamiento, el Q-Learning gana cada vez m\'as partidas de las 500.
+
+\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move.png}
+
+Adem\'as, nos resulta interesante mostrar el porcentaje acumulado de victorias a lo largo del entrenamiento.
+
+\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move_acum.png}
+
+En este queda claro ver que al principio el Random gana algunos partidos m\'as que el Q-Learning, pero con muy pocas iteraciones, este comienza a ganar las partidas consistentemente.
+
+La curva de aprendizaje es creciente, aparenta ser muy r\'apida hasta llegar al 70\%, luego el aprendizaje es m\'as lento y alcanza el 75\% al finalizar.
+
+Este comportamiento se debe a que \textcolor{red}{CHAMUYO sobre las diferentes transiciones?}
