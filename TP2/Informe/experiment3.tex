@@ -1,5 +1,27 @@
-\subsection{Experimento 3}
+\subsection{Aprende un Q-Learner inexperto contra un Q-Learner experimentado?}
 
-Este experimento consiste en entrenar un Q-Learning frente a otro. Lo ejecutamos durante un mill\'on de iteraciones (hasta aqu\'i igual que el experimento 2). Luego, un nuevo Q-Learning entrena frente al que obtuvo el mayor win\_percentage\footnote{Fue una decisi\'on completamente arbitratria} de los anteriores, ejecutamos durante un mill\'on de iteraciones y graficamos los resultados. Finalmente, este \'ultimo compite contra un Random durante la misma cantidad de iteraciones y graficamos los resultados.
+Tras el experimento anterior, nos surje la duda de qué pasaría si tomásemos uno de los Q-Learners entrenados del experimento anterior y lo pusieramos a jugar contra un Q-Learner novato. Aprenderá? En caso de que aprenda, qué pasaría si luego lo hiciésemos jugar contra un Random? Estará preparado para ganarle?
 
-Dada la pregunta planteada para este experimento, esperamos que la experiencia que el tercer Q-Learning obtenga al entrenar contra un jugador experimentado, lo ayude a vencer en mayor proporcici\'on a un Random en forma consistente y que este a un nivel similar al de un Humano.
+Este experimento consiste en entrenar un Q-Learning frente a otro. Lo ejecutamos durante un mill\'on de iteraciones (hasta aqu\'i igual que el experimento 2). Luego, un nuevo Q-Learning entrena frente al que obtuvo el mayor win\_percentage\footnote{Fue una decisi\'on completamente arbitratria} de los anteriores, ejecutamos durante un mill\'on de iteraciones y graficamos los resultados. Para esto, al Q-Learner ya entrenado le ponemos $epsilon$ en 0. De esta forma le eliminamos la exploración. Finalmente, este \'ultimo compite contra un Random durante la misma cantidad de iteraciones y graficamos los resultados.
+
+A medida que vayan entrenando el experimentado contra el inexperto, queremos ver si el inexperto aprende algo. Es decir, si comienza a ganarle en algún momento al Q-Learner experimentado.
+
+Cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experiencia. Por eso, en el experimento anterior, ambos Q-Learners tuvieron en cierta medida experiencia de jugar contra Randoms, a pesar de haber entrenado entre sí. Para un Q-Learner novato que se enfrenta a uno ya entrenado, nuestra conjetura es que no recibirá la ''experiencia'' de jugar contra un Random. Por eso, quizás al jugar luego contra un Random, no le vaya bien.
+
+Presentamos a continuación los resultados del mejor Q-Learner experimentado (Rojo) contra el Q-Learner novato (Azul).
+
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_best_p3_training.png}
+
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_best_p3_training_acum.png}
+
+Podemos ver que durante las primeras 250000 iteraciones el Q-Learner experimentado siempre tuvo un porcentaje de partidas ganadas mayor, pero que el novato iba ganando cada vez más. Luego, comienzan a ganar más parejo. En el gráfico tomado de a 500 partidas, se pueden observar picos en dónde algúno mejora momentáneamente. En el acumulado se ve una curva más estable. El experimentado continúa aprendiendo, pero ya no explora más. De esto concluímos que jugando contra un oponente experimentado de todas formas aprende.
+
+Vemos que en el gráfico de las partidas tomadas cada 500, alrededor de las 600000 iteraciones hay un período donde el porcentaje del novato crece y luego decrece. Conjeturamos que quizás descubrió una buena estrategia y al experimentado le llevó todas esas iteraciones "aprender cómo vencerla". Creemos que esto se debe a que el experimentado sigue aprendiendo. Esto nos lleva a la pregunta de qué ocurriría si dejase de aprender.
+
+Para esto repetimos el experimento, pero además de poner el $epsilon$ en 0 también ponemos el $alpha$ en 0. Observamos lo siguiente:
+
+\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training.png}
+
+\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training_acum.png}
+
+Aquí podemos ver cómo el novato comienza a ganarle más veces al experimentado. Podemos ver que, al no aprender nada, el Experimentado comienza a perder cada vez más. Esto parece apoyar nuestra hipótesis de que en el experimento previo lo que sucedió fue que primero el novato aprendió una forma nueva de ganar y luego el experimentado aprendió a contrarrestarla.
