@@ -1,0 +1,54 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[left=3cm, right=3cm]{geometry}
+\usepackage[utf8]{inputenc} % para poder usar tildes en archivos UTF-8
+\usepackage[spanish]{babel} % para que comandos como \today den el resultado en castellano
+%\usepackage{a4wide} % márgenes un poco más anchos que lo usual
+\usepackage{caratula}
+\usepackage{amsmath}
+\usepackage{tikz}
+%\usepackage{algpseudocode}
+%\usepackage{algorithm}
+\usepackage{enumerate}
+%\usepackage{dsfont}
+\usepackage{tabularx}
+\usepackage[nomove]{cite}
+%\usepackage[nottoc]{tocbibind}
+\usepackage{hyperref}
+\hypersetup{
+    linktoc=all,     %set to all if you want both sections and subsections linked
+    linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
+}
+\input{page.layout}
+
+\begin{document}
+%\newcolumntype{L}[1]{<{\raggedleft\arraybackslash}p{#1}}
+\renewcommand{\labelitemii}{$\--$}
+
+\titulo{Trabajo Práctico 2}
+\subtitulo{\emph{Aprendizaje por Refuerzos}}
+
+\fecha{\today}
+
+\materia{Aprendizaje Automático}
+
+\integrante{Donatucci, Nicolás Andres}{263/13}{nadonatucci@gmail.com}
+\integrante{Noriega, Francisco José}{660/12}{frannoriega.92@gmail.com}
+\integrante{Zimenspitz, Ezequiel}{155/13}{ezeqzim@gmail.com}
+% Pongan cuantos integrantes quieran
+%\keywords{Cálculo de autovectores, Método de la potencia, PageRank, HITS, In-Deg}
+\maketitle
+\newpage
+\thispagestyle{empty}
+\vfill
+\vspace{3cm}
+\tableofcontents
+\newpage
+\setcounter{page}{1}
+
+\input{introduction}
+\input{models}
+\input{results}
+\newpage
+\input{discussion}
+
+\end{document}
