@@ -6,7 +6,7 @@ Este experimento consiste en entrenar un Q-Learning frente a otro. Lo ejecutamos
 
 A medida que vayan entrenando el experimentado contra el inexperto, queremos ver si el inexperto aprende algo. Es decir, si comienza a ganarle en algún momento al Q-Learner experimentado.
 
-Cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experiencia. Por eso, en el experimento anterior, ambos Q-Learners tuvieron en cierta medida experiencia de jugar contra Randoms, a pesar de haber entrenado entre sí. Para un Q-Learner novato que se enfrenta a uno ya entrenado, nuestra conjetura es que no recibirá la ''experiencia'' de jugar contra un Random. Por eso, quizás al jugar luego contra un Random, no le vaya bien.
+Cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experiencia. Por eso, en el experimento anterior, ambos Q-Learners tuvieron en cierta medida experiencia de jugar contra Randoms, a pesar de haber entrenado entre sí. Para un Q-Learner novato que se enfrenta a uno ya entrenado, nuestra conjetura es que no recibirá la ‘‘experiencia'' de jugar contra un Random. Por eso, quizás al jugar luego contra un Random, no le vaya bien.
 
 Presentamos a continuación los resultados del mejor Q-Learner experimentado (Rojo) contra el Q-Learner novato (Azul).
 
@@ -16,7 +16,7 @@ Presentamos a continuación los resultados del mejor Q-Learner experimentado (Ro
 
 Podemos ver que durante las primeras 250000 iteraciones el Q-Learner experimentado siempre tuvo un porcentaje de partidas ganadas mayor, pero que el novato iba ganando cada vez más. Luego, comienzan a ganar más parejo. En el gráfico tomado de a 500 partidas, se pueden observar picos en dónde algúno mejora momentáneamente. En el acumulado se ve una curva más estable. El experimentado continúa aprendiendo, pero ya no explora más. De esto concluímos que jugando contra un oponente experimentado de todas formas aprende.
 
-Vemos que en el gráfico de las partidas tomadas cada 500, alrededor de las 600000 iteraciones hay un período donde el porcentaje del novato crece y luego decrece. Conjeturamos que quizás descubrió una buena estrategia y al experimentado le llevó todas esas iteraciones "aprender cómo vencerla". Creemos que esto se debe a que el experimentado sigue aprendiendo. Esto nos lleva a la pregunta de qué ocurriría si dejase de aprender.
+Vemos que en el gráfico de las partidas tomadas cada 500, alrededor de las 600000 iteraciones hay un período donde el porcentaje del novato crece y luego decrece. Conjeturamos que quizás descubrió una buena estrategia y al experimentado le llevó todas esas iteraciones ‘‘aprender cómo vencerla''. Creemos que esto se debe a que el experimentado sigue aprendiendo. Esto nos lleva a la pregunta de qué ocurriría si dejase de aprender.
 
 Para esto repetimos el experimento, pero además de poner el $epsilon$ en 0 también ponemos el $alpha$ en 0. Observamos lo siguiente:
 
