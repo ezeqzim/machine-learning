@@ -10,9 +10,11 @@ Cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experien
 
 Presentamos a continuación los resultados del mejor Q-Learner experimentado (Rojo) contra el Q-Learner novato (Azul).
 
-\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_best_p3_training.png}
+\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training.png}
 
-\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_best_p3_training_acum.png}
+\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training_acum.png}
+
+\textcolor{red}{DONA, REVISAR LOS NUMEROS CON LOS NUEVOS GRAFICOS! RECORDAR QUE AHORA LOS PARAMS SON ALPHA = 0.1 EPSILON = 0.0 Y GAMMA = 1.0}
 
 Podemos ver que durante las primeras 250000 iteraciones el Q-Learner experimentado siempre tuvo un porcentaje de partidas ganadas mayor, pero que el novato iba ganando cada vez más. Luego, comienzan a ganar más parejo. En el gráfico tomado de a 500 partidas, se pueden observar picos en dónde algúno mejora momentáneamente. En el acumulado se ve una curva más estable. El experimentado continúa aprendiendo, pero ya no explora más. De esto concluímos que jugando contra un oponente experimentado de todas formas aprende.
 
