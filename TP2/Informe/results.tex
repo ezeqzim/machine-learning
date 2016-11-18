@@ -1,0 +1,21 @@
+\section{Experimentación y Resultados}
+
+Antes de comenzar, realizamos pruebas sobre el valor inicial de una nueva entrada en el diccionario $\{estado, accion\} \rightarrow Q valor$. Esto es, el valor de $Q$ para un estado no visitado.
+
+Se comienza con un valor de 1.0. A medida van pasando las distintas iteraciones, se observa que el Q-learner aprende contra un Random, es decir, comienza a ganar un porcentaje mayor de veces.
+
+Colocando un valor random entre 0 y 1, el entrenamiento es errático. No se observaba un crecimiento mantenido en el porcentaje de partidas ganadas respecto del Random.
+
+Usando 0.0, funciona igual que con 1.0, pero con un win\_percentage considerablemente mayor.
+
+De esta manera, en todos los experimentos utilizamos 0.0 como valor inicial de Q para cada estado y acci\'on correspondiente.
+
+Luego realizamos un gridsearch sobre los tres hiperpar\'ametros de la t\'ecnica de Q Leaning. Los resultados fueron los siguientes:
+
+\textcolor{red}{FRAN}
+
+\input{experiment1}
+
+\input{experiment2}
+
+\input{experiment3}

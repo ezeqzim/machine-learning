@@ -64,6 +64,8 @@ def exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, a
   q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
   q_player2 = QLearningPlayer(epsilon2, alpha2, gamma2)
   run(rows, cols, x_to_win, iterations, q_player1, q_player2, filename + '_training')
+  q_player1.epsilon = 0
+  q_player2.epsilon = 0
   random_player = RandomPlayer()
   statsQ1R = run(rows, cols, x_to_win, iterations, q_player1, random_player, filename + '_p1_test')
   statsQ2R = run(rows, cols, x_to_win, iterations, q_player2, random_player, filename + '_p2_test')
