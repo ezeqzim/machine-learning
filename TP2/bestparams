@@ -1,0 +1,144 @@
+Alpha: 0.2 | Epsilon: 0.1 | Gamma: 0.6
+QLearningPlayer: 65.631 | RandomPlayer: 34.253
+Alpha: 0.2 | Epsilon: 0.1 | Gamma: 0.7
+QLearningPlayer: 65.628 | RandomPlayer: 34.283
+Alpha: 0.2 | Epsilon: 0.1 | Gamma: 0.8
+QLearningPlayer: 65.724 | RandomPlayer: 34.178
+Alpha: 0.2 | Epsilon: 0.1 | Gamma: 0.9
+QLearningPlayer: 66.171 | RandomPlayer: 33.722
+Alpha: 0.2 | Epsilon: 0.2 | Gamma: 0.6
+QLearningPlayer: 59.601 | RandomPlayer: 40.258
+Alpha: 0.2 | Epsilon: 0.2 | Gamma: 0.7
+QLearningPlayer: 59.915 | RandomPlayer: 39.938
+Alpha: 0.2 | Epsilon: 0.2 | Gamma: 0.8
+QLearningPlayer: 59.958 | RandomPlayer: 39.914
+Alpha: 0.2 | Epsilon: 0.2 | Gamma: 0.9
+QLearningPlayer: 60.594 | RandomPlayer: 39.234
+Alpha: 0.2 | Epsilon: 0.3 | Gamma: 0.6
+QLearningPlayer: 55.273 | RandomPlayer: 44.547
+Alpha: 0.2 | Epsilon: 0.3 | Gamma: 0.7
+QLearningPlayer: 55.078 | RandomPlayer: 44.733
+Alpha: 0.2 | Epsilon: 0.3 | Gamma: 0.8
+QLearningPlayer: 55.375 | RandomPlayer: 44.429
+Alpha: 0.2 | Epsilon: 0.3 | Gamma: 0.9
+QLearningPlayer: 56.601 | RandomPlayer: 43.208
+Alpha: 0.2 | Epsilon: 0.4 | Gamma: 0.6
+QLearningPlayer: 51.622 | RandomPlayer: 48.164
+Alpha: 0.2 | Epsilon: 0.4 | Gamma: 0.7
+QLearningPlayer: 51.946 | RandomPlayer: 47.837
+Alpha: 0.2 | Epsilon: 0.4 | Gamma: 0.8
+QLearningPlayer: 52.057 | RandomPlayer: 47.75
+Alpha: 0.2 | Epsilon: 0.4 | Gamma: 0.9
+QLearningPlayer: 53.745 | RandomPlayer: 46.076
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.6
+QLearningPlayer: 65.593 | RandomPlayer: 34.287
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.7
+QLearningPlayer: 65.7 | RandomPlayer: 34.186
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.8
+QLearningPlayer: 65.588 | RandomPlayer: 34.307
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.9
+QLearningPlayer: 65.622 | RandomPlayer: 34.271
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.8
+QLearningPlayer: 65.743 | RandomPlayer: 34.132
+Alpha: 0.3 | Epsilon: 0.1 | Gamma: 0.9
+QLearningPlayer: 66.141 | RandomPlayer: 33.719
+Alpha: 0.3 | Epsilon: 0.2 | Gamma: 0.6
+QLearningPlayer: 59.679 | RandomPlayer: 40.187
+Alpha: 0.3 | Epsilon: 0.2 | Gamma: 0.7
+QLearningPlayer: 59.753 | RandomPlayer: 40.101
+Alpha: 0.3 | Epsilon: 0.2 | Gamma: 0.8
+QLearningPlayer: 59.829 | RandomPlayer: 40.0
+Alpha: 0.3 | Epsilon: 0.2 | Gamma: 0.9
+QLearningPlayer: 60.785 | RandomPlayer: 39.082
+Alpha: 0.3 | Epsilon: 0.3 | Gamma: 0.6
+QLearningPlayer: 55.322 | RandomPlayer: 44.491
+Alpha: 0.3 | Epsilon: 0.3 | Gamma: 0.7
+QLearningPlayer: 55.4 | RandomPlayer: 44.428
+Alpha: 0.3 | Epsilon: 0.3 | Gamma: 0.8
+QLearningPlayer: 55.39 | RandomPlayer: 44.426
+Alpha: 0.3 | Epsilon: 0.3 | Gamma: 0.9
+QLearningPlayer: 56.552 | RandomPlayer: 43.273
+Alpha: 0.3 | Epsilon: 0.4 | Gamma: 0.6
+QLearningPlayer: 51.735 | RandomPlayer: 48.04
+Alpha: 0.3 | Epsilon: 0.4 | Gamma: 0.7
+QLearningPlayer: 51.794 | RandomPlayer: 48.015
+Alpha: 0.3 | Epsilon: 0.4 | Gamma: 0.8
+QLearningPlayer: 52.238 | RandomPlayer: 47.548
+Alpha: 0.3 | Epsilon: 0.4 | Gamma: 0.9
+QLearningPlayer: 55.514 | RandomPlayer: 44.284
+Alpha: 0.4 | Epsilon: 0.1 | Gamma: 0.6
+QLearningPlayer: 65.522 | RandomPlayer: 34.354
+Alpha: 0.4 | Epsilon: 0.1 | Gamma: 0.7
+QLearningPlayer: 65.718 | RandomPlayer: 34.18
+Alpha: 0.4 | Epsilon: 0.1 | Gamma: 0.8
+QLearningPlayer: 65.622 | RandomPlayer: 34.263
+Alpha: 0.4 | Epsilon: 0.1 | Gamma: 0.9
+QLearningPlayer: 66.011 | RandomPlayer: 33.881
+Alpha: 0.4 | Epsilon: 0.2 | Gamma: 0.6
+QLearningPlayer: 60.093 | RandomPlayer: 39.755
+Alpha: 0.4 | Epsilon: 0.2 | Gamma: 0.7
+QLearningPlayer: 59.851 | RandomPlayer: 39.978
+Alpha: 0.4 | Epsilon: 0.2 | Gamma: 0.8
+QLearningPlayer: 59.742 | RandomPlayer: 40.111
+Alpha: 0.4 | Epsilon: 0.2 | Gamma: 0.9
+QLearningPlayer: 60.753 | RandomPlayer: 39.091
+Alpha: 0.4 | Epsilon: 0.3 | Gamma: 0.6
+QLearningPlayer: 54.833 | RandomPlayer: 44.968
+Alpha: 0.4 | Epsilon: 0.3 | Gamma: 0.7
+QLearningPlayer: 55.108 | RandomPlayer: 44.702
+Alpha: 0.4 | Epsilon: 0.3 | Gamma: 0.8
+QLearningPlayer: 55.78 | RandomPlayer: 44.049
+Alpha: 0.4 | Epsilon: 0.3 | Gamma: 0.9
+QLearningPlayer: 56.891 | RandomPlayer: 42.934
+Alpha: 0.4 | Epsilon: 0.4 | Gamma: 0.6
+QLearningPlayer: 51.841 | RandomPlayer: 47.981
+Alpha: 0.4 | Epsilon: 0.4 | Gamma: 0.7
+QLearningPlayer: 51.426 | RandomPlayer: 48.381
+Alpha: 0.4 | Epsilon: 0.4 | Gamma: 0.8
+QLearningPlayer: 52.383 | RandomPlayer: 47.391
+Alpha: 0.4 | Epsilon: 0.4 | Gamma: 0.9
+QLearningPlayer: 53.765 | RandomPlayer: 46.012
+Alpha: 0.5 | Epsilon: 0.1 | Gamma: 0.6
+QLearningPlayer: 65.837 | RandomPlayer: 34.033
+Alpha: 0.5 | Epsilon: 0.1 | Gamma: 0.7
+QLearningPlayer: 65.409 | RandomPlayer: 34.452
+Alpha: 0.5 | Epsilon: 0.1 | Gamma: 0.8
+QLearningPlayer: 65.741 | RandomPlayer: 34.146
+Alpha: 0.5 | Epsilon: 0.1 | Gamma: 0.9
+QLearningPlayer: 65.709 | RandomPlayer: 34.186
+Alpha: 0.5 | Epsilon: 0.2 | Gamma: 0.6
+QLearningPlayer: 59.634 | RandomPlayer: 40.216
+Alpha: 0.5 | Epsilon: 0.2 | Gamma: 0.7
+QLearningPlayer: 59.907 | RandomPlayer: 39.938
+Alpha: 0.5 | Epsilon: 0.2 | Gamma: 0.8
+QLearningPlayer: 59.804 | RandomPlayer: 40.044
+Alpha: 0.5 | Epsilon: 0.2 | Gamma: 0.9
+QLearningPlayer: 60.748 | RandomPlayer: 39.102
+Alpha: 0.5 | Epsilon: 0.3 | Gamma: 0.6
+QLearningPlayer: 54.861 | RandomPlayer: 44.954
+Alpha: 0.5 | Epsilon: 0.3 | Gamma: 0.7
+QLearningPlayer: 54.978 | RandomPlayer: 44.818
+Alpha: 0.5 | Epsilon: 0.3 | Gamma: 0.8
+QLearningPlayer: 55.486 | RandomPlayer: 44.324
+Alpha: 0.5 | Epsilon: 0.3 | Gamma: 0.9
+QLearningPlayer: 56.9 | RandomPlayer: 42.953
+Alpha: 0.5 | Epsilon: 0.4 | Gamma: 0.6
+QLearningPlayer: 51.883 | RandomPlayer: 47.895
+Alpha: 0.5 | Epsilon: 0.4 | Gamma: 0.7
+QLearningPlayer: 51.74 | RandomPlayer: 48.048
+Alpha: 0.5 | Epsilon: 0.4 | Gamma: 0.8
+QLearningPlayer: 52.406 | RandomPlayer: 47.377
+Alpha: 0.5 | Epsilon: 0.4 | Gamma: 0.9
+QLearningPlayer: 53.731 | RandomPlayer: 46.076
+Alpha: 1.0 | Epsilon: 0.0 | Gamma: 1.0
+QLearningPlayer: 55.738 | RandomPlayer: 44.031
+Alpha: 1.0 | Epsilon: 0.0 | Gamma: 1.0
+QLearningPlayer: 55.42 | RandomPlayer: 44.321
+Alpha: 0.1 | Epsilon: 0.0 | Gamma: 1.0
+QLearningPlayer: 77.209 | RandomPlayer: 22.667
+Alpha: 0.0 | Epsilon: 0.0 | Gamma: 1.0
+QLearningPlayer: 49.761 | RandomPlayer: 49.973
+Alpha: 1.0 | Epsilon: 0.0 | Gamma: 0.1
+QLearningPlayer: 74.343 | RandomPlayer: 25.576
+Alpha: 1.0 | Epsilon: 0.0 | Gamma: 0.0
+QLearningPlayer: 74.43 | RandomPlayer: 25.492
