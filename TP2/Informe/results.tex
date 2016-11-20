@@ -1,18 +1,104 @@
+\definecolor{intvier}{RGB}{144, 224, 87}
 \section{Experimentación y Resultados}
+Antes de comenzar, se realizaron pruebas sobre el valor inicial de una nueva entrada en el diccionario $\{estado, accion\} \rightarrow \text{\emph{Q-valor}}$. Esto es, el valor de $Q$ para un estado no visitado.
 
-Antes de comenzar, realizamos pruebas sobre el valor inicial de una nueva entrada en el diccionario $\{estado, accion\} \rightarrow Q valor$. Esto es, el valor de $Q$ para un estado no visitado.
-
-Se comienza con un valor de 1.0. A medida van pasando las distintas iteraciones, se observa que el Q-learner aprende contra un Random, es decir, comienza a ganar un porcentaje mayor de veces.
+Se comienza con un valor de $1.0$. A medida van pasando las distintas iteraciones, se observa que el Q-learner aprende contra un Random, es decir, comienza a ganar un porcentaje mayor de veces.
 
 Colocando un valor random entre 0 y 1, el entrenamiento es errático. No se observaba un crecimiento mantenido en el porcentaje de partidas ganadas respecto del Random.
 
-Usando 0.0, funciona igual que con 1.0, pero con un win\_percentage considerablemente mayor.
+Usando 0.0, funciona igual que con 1.0, pero con un porcentaje de victorias del Q-Learner considerablemente mayor.
+Por esta raz\'on, se decidi\'o utilizar $0.0$ como valor inicial de $Q$ para cada estado y acci\'on correspondiente.\\
 
-Luego realizamos un gridsearch sobre los tres hiperpar\'ametros de la t\'ecnica de Q Leaning. Los resultados fueron los siguientes:
+Luego, se llev\'o a cabo una serie de ejecuciones, variando los tres hiperpar\'ametros de la t\'ecnica de Q-Learning, para determinar c\'omo afectan al aprendizaje. 
+En estas ejecuciones, se entrenaba un Q-Learner contra otro Q-Learner, y se somet\'ia al mejor de los dos, a jugar contra un jugador Random, midiendo la cantidad de victorias contra este \'ultimo. Los resultados fueron los siguientes:
 
-\textcolor{red}{FRAN}
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|}
+	\hline
+	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	\hline
+	\hline
+	0.2 & 65.63\% & 65.62\% & 65.72\% & \cellcolor{intvier}66.17\% \\
+	\hline
+	0.3 & 65.59\% & 65.70\% & 65.58\% & 66.14\% \\
+	\hline
+	0.4 & 65.52\% & 65.71\% & 65.62\% & 66.01\% \\
+	\hline
+	0.5 & 65.83\% & 65.40\% & 65.74\% & 65.70\% \\
+	\hline
+\end{tabular}\\
+Porcentaje de victorias con $\varepsilon=0.1$
+\end{center}
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|}
+	\hline
+	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	\hline
+	\hline
+	0.2 & 59.60\% & 59.91\% & 59.95\% & 60.59\% \\
+	\hline
+	0.3 & 59.67\% & 59.75\% & 59.82\% & \cellcolor{intvier}60.78\% \\
+	\hline
+	0.4 & 60.09\% & 59.85\% & 59.74\% & 60.75\% \\
+	\hline
+	0.5 & 59.63\% & 59.90\% & 59.80\% & 60.74\% \\
+	\hline
+\end{tabular}\\
+Porcentaje de victorias con $\varepsilon=0.2$
+\end{center}
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|}
+	\hline
+	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	\hline
+	\hline
+	0.2 & 55.27\% & 55.07\% & 55.37\% & 56.60\% \\
+	\hline
+	0.3 & 55.32\% & 55.40\% & 55.39\% & 56.55\% \\
+	\hline
+	0.4 & 54.83\% & 55.10\% & 55.78\% & 56.89\% \\
+	\hline
+	0.5 & 54.86\% & 54.97\% & 55.48\% & \cellcolor{intvier}56.90\% \\
+	\hline
+\end{tabular}\\
+Porcentaje de victorias con $\varepsilon=0.3$
+\end{center}
+\begin{center}
+\begin{tabular}{|c||c|c|c|c|}
+	\hline
+	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	\hline
+	\hline
+	0.2 & 51.62\% & 51.94\% & 52.05\% & 53.74\% \\
+	\hline
+	0.3 & 51.73\% & 51.79\% & 52.23\% & 55.51\% \\
+	\hline
+	0.4 & 51.84\% & 51.42\% & 52.38\% & \cellcolor{intvier}53.76\% \\
+	\hline
+	0.5 & 51.88\% & 51.74\% & 52.40\% & 53.73\% \\
+	\hline
+\end{tabular}\\
+Porcentaje de victorias con $\varepsilon=0.4$
+\end{center}
 
-De esta manera, en todos los experimentos utilizamos 0.0 como valor inicial de Q para cada estado y acci\'on correspondiente. Además, utilizamos epsilon = 0.0, alpha = 0.1 y gamma = 1.0 como hiperparámetros del método.
+Como se puede observar, a mayor valor de $\varepsilon$, peores los resultados obtenidos. Por lo tanto, se realizaron una nueva serie de ejecuciones que obtuvieron los siguientes resultados:
+\begin{center}
+\begin{tabular}{|c||c|c|c|}
+	\hline
+	\backslashbox{$\alpha$}{$\gamma$}& 0.0 & 0.1 & 1.0\\
+	\hline
+	\hline
+	0.0 & - & - & 49.76\%\\
+	\hline
+	0.1 & - & - & \cellcolor{intvier}77.20\%\\
+	\hline
+	1.0 & 74.43\% & 74.34\% & 55.73\%\\
+	\hline
+\end{tabular}\\
+Porcentaje de victorias con $\varepsilon=0$
+\end{center}
+
+En vista de estos resultados, se decidi\'o utilizar $\varepsilon = 0.0$, $\alpha = 0.1$ y $\gamma = 1.0$ para los dem\'as experimentos.
 
 \input{experiment1}
 
