@@ -1,9 +1,15 @@
-\subsection{Entrenamiento contra Q-Learner no entrenado}
+\subsection{¿Aprende un Q-Learner entrenado contra otro Q-Learner?}
 
-Queremos ver si, al entrenar un Q-Learner contra un oponente un poco más inteligente, se obtienen mejores resultados. Este experimento consiste en entrenar un Q-Learner contra otro. Lo ejecutamos durante un mill\'on de iteraciones y graficamos los resultados. Luego, cada uno de estos compite contra un Random durante la misma cantidad de iteraciones y graficamos los resultados.
+El enfoque de este experimento fue observar cómo se comportan dos Q-Learner al entrenar compitiendo entre sí, para determinar si los resultados obtenidos indicaban una mejoría en sus estrategias de juego.
+Luego, cada uno de éstos compitió contra un jugador Random durante la misma cantidad de iteraciones y se graficaron los resultados.
 
-Los dos Q-Learners comienzan siendo muy poco inteligentes. A medida vayan pasando las iteraciones, ambos deberían ir aprendiendo de forma conjunta. Es decir, se deberían ir haciendo mejores a un ritmo parejo. De esta forma conjeturamos que van a comenzar a explorar estados más interesantes, con partidas un poco más largas. En el mejor caso, se podría llegar a ver que comiencen a empatar, si ambos aprendieron a jugar muy bien.
+\ig{Imagenes/Results/exp2/gridsearch/gridsearch_training_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
 
-Por eso conjeturamos que, una vez entrenado el Q-Learner, va a obtener mejores resultados contra un Random que los obtenidos en el experimento anterior, cuando entrenó únicamente contra un Random.
+Ambos Q-Learners comienzan demostrando una baja inteligencia, ya que ambos realizan jugadas aleatorias al principio. Sin embargo, conforme avanzan las iteraciones, ambos comienzan a realizar mejores movimientos, y se puede observar que mejoran a un ritmo similar, dado que el porcentaje de victorias de cada uno tiende al 50\% al final, indicando que ambos tienen una estrategia ganadora.\\
+
+Por los resultados obtenidos, se conjeturó que, una vez entrenado el Q-Learner, obtendrá más victorias contra el jugador Random que los obtenidos en el experimento anterior, cuando entrenó únicamente contra un jugador Random.
+Dicha conjetura se condijo con los resultados obtenidos.
+
+\ig{Imagenes/Results/exp2/gridsearch/gridsearch_p1_test_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
 
 \textcolor{red}{CHAMUYO}

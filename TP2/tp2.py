@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 from x_in_a_row import XInARow
 from player import Player
 from random_player import RandomPlayer
+from dumb_player import DumbPlayer
 from q_learning_player import QLearningPlayer
 
 def modo_de_uso():
@@ -55,10 +56,10 @@ def best_player(p1, p2, winsP1Acum, winsP2Acum):
   return p1 if winsP1Acum >= winsP2Acum else p2
 
 def exp1(rows, cols, x_to_win, iterations, epsilon, alpha, gamma, filename):
-  q_player = QLearningPlayer(epsilon, alpha, gamma)
+  dumb_player = DumbPlayer()
   random_player = RandomPlayer()
-  run(rows, cols, x_to_win, iterations, q_player, random_player, filename)
-  return q_player
+  run(rows, cols, x_to_win, iterations, dumb_player, random_player, filename)
+  return dumb_player
 
 def exp2(rows, cols, x_to_win, iterations, epsilon1, alpha1, gamma1, epsilon2, alpha2, gamma2, filename):
   q_player1 = QLearningPlayer(epsilon1, alpha1, gamma1)
