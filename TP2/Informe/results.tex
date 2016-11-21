@@ -9,13 +9,13 @@ Colocando un valor random entre 0 y 1, el entrenamiento es errático. No se obse
 Usando 0.0, funciona igual que con 1.0, pero con un porcentaje de victorias del Q-Learner considerablemente mayor.
 Por esta raz\'on, se decidi\'o utilizar $0.0$ como valor inicial de $Q$ para cada estado y acci\'on correspondiente.\\
 
-Luego, se llev\'o a cabo una serie de ejecuciones, variando los tres hiperpar\'ametros de la t\'ecnica de Q-Learning, para determinar c\'omo afectan al aprendizaje. 
+Luego, se llev\'o a cabo una serie de ejecuciones, variando los tres hiperpar\'ametros de la t\'ecnica de Q-Learning, para determinar c\'omo afectan al aprendizaje.
 En estas ejecuciones, se entrenaba un Q-Learner contra otro Q-Learner, y se somet\'ia al mejor de los dos, a jugar contra un jugador Random, midiendo la cantidad de victorias contra este \'ultimo. Los resultados fueron los siguientes:
 
 \begin{center}
 \begin{tabular}{|c||c|c|c|c|}
 	\hline
-	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	$\alpha$/$\gamma$& 0.6 & 0.7 & 0.8 & 0.9\\
 	\hline
 	\hline
 	0.2 & 65.63\% & 65.62\% & 65.72\% & \cellcolor{intvier}66.17\% \\
@@ -32,7 +32,7 @@ Porcentaje de victorias con $\varepsilon=0.1$
 \begin{center}
 \begin{tabular}{|c||c|c|c|c|}
 	\hline
-	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	$\alpha$/$\gamma$& 0.6 & 0.7 & 0.8 & 0.9\\
 	\hline
 	\hline
 	0.2 & 59.60\% & 59.91\% & 59.95\% & 60.59\% \\
@@ -49,7 +49,7 @@ Porcentaje de victorias con $\varepsilon=0.2$
 \begin{center}
 \begin{tabular}{|c||c|c|c|c|}
 	\hline
-	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+    $\alpha$/$\gamma$& 0.6 & 0.7 & 0.8 & 0.9\\
 	\hline
 	\hline
 	0.2 & 55.27\% & 55.07\% & 55.37\% & 56.60\% \\
@@ -66,7 +66,7 @@ Porcentaje de victorias con $\varepsilon=0.3$
 \begin{center}
 \begin{tabular}{|c||c|c|c|c|}
 	\hline
-	\backslashbox{$\alpha$}{$\gamma$}& 0.6 & 0.7 & 0.8 & 0.9\\
+	$\alpha$/$\gamma$& 0.6 & 0.7 & 0.8 & 0.9\\
 	\hline
 	\hline
 	0.2 & 51.62\% & 51.94\% & 52.05\% & 53.74\% \\
@@ -85,7 +85,7 @@ Como se puede observar, a mayor valor de $\varepsilon$, peores los resultados ob
 \begin{center}
 \begin{tabular}{|c||c|c|c|}
 	\hline
-	\backslashbox{$\alpha$}{$\gamma$}& 0.0 & 0.1 & 1.0\\
+	$\alpha$/$\gamma$& 0.0 & 0.1 & 1.0\\
 	\hline
 	\hline
 	0.0 & - & - & 49.76\%\\
