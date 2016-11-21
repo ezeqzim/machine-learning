@@ -2,12 +2,12 @@
 \section{Experimentación y Resultados}
 Antes de comenzar, se realizaron pruebas sobre el valor inicial de una nueva entrada en el diccionario $\{estado, accion\} \rightarrow \text{\emph{Q-valor}}$. Esto es, el valor de $Q$ para un estado no visitado.
 
-Se comienza con un valor de $1.0$. A medida van pasando las distintas iteraciones, se observa que el Q-learner aprende contra un Random, es decir, comienza a ganar un porcentaje mayor de veces.
+Se comienza con un valor de 1.0. A medida van pasando las distintas iteraciones, se observa que el Q-learner aprende contra un Random, es decir, comienza a ganar un porcentaje mayor de veces.
 
 Colocando un valor random entre 0 y 1, el entrenamiento es errático. No se observaba un crecimiento mantenido en el porcentaje de partidas ganadas respecto del Random.
 
 Usando 0.0, funciona igual que con 1.0, pero con un porcentaje de victorias del Q-Learner considerablemente mayor.
-Por esta raz\'on, se decidi\'o utilizar $0.0$ como valor inicial de $Q$ para cada estado y acci\'on correspondiente.\\
+Por esta raz\'on, se decidi\'o utilizar 0.0 como valor inicial de $Q$ para cada estado y acci\'on correspondiente.\\
 
 Luego, se llev\'o a cabo una serie de ejecuciones, variando los tres hiperpar\'ametros de la t\'ecnica de Q-Learning, para determinar c\'omo afectan al aprendizaje.
 En estas ejecuciones, se entrenaba un Q-Learner contra otro Q-Learner, y se somet\'ia al mejor de los dos, a jugar contra un jugador Random, midiendo la cantidad de victorias contra este \'ultimo. Los resultados fueron los siguientes:
@@ -98,7 +98,7 @@ Como se puede observar, a mayor valor de $\varepsilon$, peores los resultados ob
 Porcentaje de victorias con $\varepsilon=0$
 \end{center}
 
-En vista de estos resultados, se decidi\'o utilizar $\varepsilon = 0.0$, $\alpha = 0.1$ y $\gamma = 1.0$ para los dem\'as experimentos.
+En vista de estos resultados, se decidi\'o utilizar $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0 para los dem\'as experimentos.
 
 \input{experiment1}
 

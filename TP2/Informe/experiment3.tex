@@ -1,4 +1,4 @@
-\subsection{Aprende un Q-Learner inexperto contra un Q-Learner experimentado?}
+\subsection{Entrenamiento contra Q-Learner entrenado}
 
 Tras el experimento anterior, nos surje la duda de qué pasaría si tomásemos uno de los Q-Learners entrenados del experimento anterior y lo pusieramos a jugar contra un Q-Learner novato. Aprenderá? En caso de que aprenda, qué pasaría si luego lo hiciésemos jugar contra un Random? Estará preparado para ganarle?
 
@@ -10,9 +10,9 @@ Cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experien
 
 Presentamos a continuación los resultados del mejor Q-Learner experimentado (Rojo) contra el Q-Learner novato (Azul).
 
-\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training.png}
+\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training.png}{COMPLETAR}
 
-\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training_acum.png}
+\ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training_acum.png}{COMPLETAR}
 
 \textcolor{red}{DONA, REVISAR LOS NUMEROS CON LOS NUEVOS GRAFICOS! RECORDAR QUE AHORA LOS PARAMS SON ALPHA = 0.1 EPSILON = 0.0 Y GAMMA = 1.0}
 
@@ -22,8 +22,8 @@ Vemos que en el gráfico de las partidas tomadas cada 500, alrededor de las 6000
 
 Para esto repetimos el experimento, pero además de poner el $epsilon$ en 0 también ponemos el $alpha$ en 0. Observamos lo siguiente:
 
-\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training.png}
+\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training.png}{COMPLETAR}
 
-\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training_acum.png}
+\ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training_acum.png}{COMPLETAR}
 
 Aquí podemos ver cómo el novato comienza a ganarle más veces al experimentado. Podemos ver que, al no aprender nada, el Experimentado comienza a perder cada vez más. Esto parece apoyar nuestra hipótesis de que en el experimento previo lo que sucedió fue que primero el novato aprendió una forma nueva de ganar y luego el experimentado aprendió a contrarrestarla.
