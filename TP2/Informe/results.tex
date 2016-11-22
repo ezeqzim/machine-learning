@@ -99,6 +99,11 @@ Porcentaje de victorias con $\varepsilon=0$
 \end{center}
 
 En vista de estos resultados, se decidi\'o utilizar $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0 para los dem\'as experimentos.
+Estos parámetros parecieron adecuados, y demostraron mejorar el aprendizaje al ejecutar los primeros dos experimentos. Sin embargo, al ejecutar el tercer experimento, en el que se entrenaban dos Q-Learner y luego se entrenaba un tercer Q-Learner contra alguno de los dos previamente mencionados (y ya entrenados), los resultados mostraron que el Q-Learner entrenado jugaba peor que el Q-Learner que se estaba entrenando. Una discusión más profunda sobre estos resultados se encuentra en la sección del tercer experimento.
+
+Por lo tanto, se decidió utilizar los parámetros $\varepsilon = $ 0.2, $\alpha = $ 0.3 y $\gamma = $ 0.9.\\
+
+Para todos los experimentos presentados a continuación, se entrenó a un Q-Learner contra diversos adversarios, a lo largo de un millón de iteraciones.
 
 \input{experiment1}
 

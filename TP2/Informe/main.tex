@@ -14,6 +14,7 @@
 \usepackage{enumerate}
 %\usepackage{dsfont}
 \usepackage{tabularx}
+\usepackage{float}
 \usepackage[nomove]{cite}
 %\usepackage[nottoc]{tocbibind}
 \usepackage{hyperref}
@@ -22,7 +23,7 @@
     linkcolor=blue,  %choose shttps://www.sharelatex.com/project/542da47afb0e80fe43643f61ome color if you want links to stand out
 }
 \input{page.layout}
-\newcommand{\ig}[2]{\begin{figure}\centering\includegraphics[width=15cm]{#1}\caption{#2}\end{figure}}
+\newcommand{\ig}[2]{\begin{figure}[H]\centering\includegraphics[width=15cm]{#1}\caption{#2}\end{figure}}
 
 \begin{document}
 %\newcolumntype{L}[1]{<{\raggedleft\arraybackslash}p{#1}}
