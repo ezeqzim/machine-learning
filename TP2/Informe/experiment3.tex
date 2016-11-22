@@ -52,6 +52,12 @@ Aquí podemos ver cómo el novato comienza a ganarle más veces al experimentado
 
 Por último, cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experiencia. Por eso, en el experimento anterior, ambos Q-Learners tuvieron en cierta medida experiencia de jugar contra Randoms, a pesar de haber entrenado entre sí. Para un Q-Learner novato que se enfrenta a uno ya entrenado, nuestra conjetura es que no recibirá la ‘‘experiencia'' de jugar contra un Random. Por eso, quizás al jugar luego contra un Random, no le vaya bien.
 
-Por eso se corrió un último experimento, haciendo jugar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado) contra un Random. Los resultados fueron los siguientes>
+Por eso se corrió un último experimento, haciendo jugar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado y con su epsilon igual a 0) contra un Random. Los resultados fueron los siguientes:
 
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_p3_random_test.png}{Porcentaje de partidas ganadas de cada Q-Learner en ventanas de 500 iteraciones}
 
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_p3_random_test_acum.png}{Porcentaje de partidas ganadas de cada Q-Learner}
+
+Se puede observar que, al comenzar, los porcentajes son cercanos al 50\%. Es decir, a diferencia de los otros experimentos, donde una vez entrenado, el Q-Learner siempre comenzaba ganandole al Random, éste Q-Learner comienza ganando pocas partidas contra el Random. Esto parece afirmar nuestra hipótesis de que nunca tuvo una real experiencia de jugar contra un jugador aleatorio. De todas formas, rápidamente aprende cómo vencerlo y hacia el final del experimento consigue ganar un 85\% de las veces.
+
+Entonces, al haber jugado únicamente contra oponentes más inteligentes, al verse enfrentado a uno completamente aleatorio, en un principio el Q-Learner no supo qué hacer, no estaba preparado.
