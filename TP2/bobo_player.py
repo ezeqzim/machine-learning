@@ -1,9 +1,9 @@
 import random
 from player import Player
 
-class DumbPlayer(Player):
+class BoboPlayer(Player):
   def __init__(self):
-    self.breed = 'dumb'
+    self.breed = 'bobo'
     self.wins = 0
 
   def reward(self, value, board):

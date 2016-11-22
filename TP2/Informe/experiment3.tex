@@ -1,5 +1,12 @@
 \subsection{Aprende un Q-Learner inexperto contra un Q-Learner experimentado?}
 
+\textcolor{red}{Al correr el experimento con los parametros $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0, los resultados fueron [INSERT RESULTADOS HERE].
+Estos resultados demuestran que un Q-Learner sin entrenar puede vencer a un Q-Learner entrenado.
+Se conjeturó que esto sucede porque no se favorece la exploración de nuevos estados (es decir, el Q-Learner solo explora cuando no conoce un estado, y realiza la misma jugada siempre si lo conoce), y porque el $\alpha$ es muy bajo, lo que indica que deja de aprender a un ritmo muy rápido. Lo que podría estar ocurriendo, es que el Q-Learner entrenado siempre intente realizar la misma estrategia, por lo que el nuevo Q-Learner sólo debe aprender a vencerla.
+Una forma de validar que dicha conjetura es cierta, fue creando un nuevo jugador, el jugador Bobo, cuyas unico movimiento es poner una ficha en la última columna donde se pueda colocar; y verificando que éste tuviera resultados similares a los del Q-Learner cuando se enfrenta al jugador Random.
+Los resultados son [INSERT RESULTADOS HERE].
+Como se puede observar, el jugador Bobo juega igual de bien que el Q-Learner contra el jugador Random. Dicho resultado podría entonces explicar por que el Q-Learner experimentado pierde contra el Q-Learner sin entrenamieto: el experimentado consigue aprender una estrategia y siempre la aplica (y por eso, al igual que el jugador Bobo, siempre le gana al jugador Random), y el Q-Learner sin entrenamiento sólo debe aprender a vencerla.}
+
 Tras el experimento anterior, nos surje la duda de qué pasaría si tomásemos uno de los Q-Learners entrenados del experimento anterior y lo pusieramos a jugar contra un Q-Learner novato. Aprenderá? En caso de que aprenda, qué pasaría si luego lo hiciésemos jugar contra un Random? Estará preparado para ganarle?
 
 Este experimento consiste en entrenar un Q-Learning frente a otro. Lo ejecutamos durante un mill\'on de iteraciones (hasta aqu\'i igual que el experimento 2). Luego, un nuevo Q-Learning entrena frente al que obtuvo el mayor win\_percentage\footnote{Fue una decisi\'on completamente arbitratria} de los anteriores, ejecutamos durante un mill\'on de iteraciones y graficamos los resultados. Para esto, al Q-Learner ya entrenado le ponemos $epsilon$ en 0. De esta forma le eliminamos la exploración. Finalmente, este \'ultimo compite contra un Random durante la misma cantidad de iteraciones y graficamos los resultados.

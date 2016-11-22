@@ -6,9 +6,9 @@ Nuestra conjetura es que el Q-Learner va a aprender. Es decir, a medida vayan pa
 
 Se presentan a continuación los resultados del experimento.
 
-\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move.png}{Porcentaje de victorias de Q-Learner contra Random en ventanas de 500 partidas}
+\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move.png}{Porcentaje de victorias de Q-Learner en ventanas de 500 partidas}
 
-\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move_acum.png}{Porcentaje de victorias totales de Q-Learner contra Random}
+\ig{Imagenes/Results/exp1/zero_any_move/zero_any_move_acum.png}{Porcentaje de victorias totales de Q-Learner a lo largo de las iteraciones}
 
 Se puede ver que con el correr del entrenamiento, el Q-Learner gana cada vez m\'as partidas de las 500. A su vez, el porcentaje acumulado aumenta consistentemente.
 
@@ -22,12 +22,12 @@ Nuestra conjetura es que la gran mayoría de las veces que gana, gana con esa es
 
 Pero viendo esto, falta aún ver por qué pierde. La respuesta a la que llegamos es que en parte se debe al coeficiente de exploración. Es decir, si explora quizás pierde. Para probar esto, utilizamos al Q-Learner ya entrenado y le bajamos el coeficiente de exploración a 0. Lo pusimos a jugar nuevamente contra el Random, dando los siguientes resultados.
 
-\ig{Imagenes/Results/exp1/validation/valid_test_validation.png}{Porcentaje de victorias de Q-Learner contra Random en ventanas de 500 partidas con epsilon = 0}
+\ig{Imagenes/Results/exp1/validation/valid_test_validation.png}{Porcentaje de victorias de Q-Learner en ventanas de 500 partidas con $\varepsilon = 0$}
 
-\ig{Imagenes/Results/exp1/validation/valid_test_validation_acum.png}{Porcentaje total de victorias de Q-Learner contra Random con epsilon = 0}
+\ig{Imagenes/Results/exp1/validation/valid_test_validation_acum.png}{Porcentaje total de victorias de Q-Learner a lo largo de las iteraciones con $\varepsilon = 0$}
 
 Como sospechamos, una vez apagado su coeficiente de exploración, su desmepeño aumentó considerablemente, ganando por arriba del 90\% de las veces.
 
-Cuando aún tenía el epsilon mayor a cero, la exploración hacía que se desvíe de su estrategia. Una vez se desvía de su estrategia ganadora, vemos que su desempeño empeora. Nuestra conjetura es que, probablemente la mayor parte de sus victorias son con la estrategia de la columna derecha. Entonces no está aprendiendo mucho. Simplemente gana muchas partidas con una estrategia poco inteligente. Entonces le lleva mucho tiempo aprender cosas nuevas, porque está jugando contra un jugador muy poco inteligente.
+Cuando aún tenía el $\varepsilon$ mayor a cero, la exploración hacía que se desvíe de su estrategia. Una vez se desvía de su estrategia ganadora, vemos que su desempeño empeora. Nuestra conjetura es que, probablemente la mayor parte de sus victorias son con la estrategia de la columna derecha. Entonces no está aprendiendo mucho. Simplemente gana muchas partidas con una estrategia poco inteligente. Entonces le lleva mucho tiempo aprender cosas nuevas, porque está jugando contra un jugador muy poco inteligente.
 
 Con esto en mente, decidimos ver qué ocurre si lo entrenamos contra un oponente más inteligente.
