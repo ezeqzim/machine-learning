@@ -12,8 +12,6 @@ Se presentan a continuación los resultados del experimento.
 
 Se puede ver que con el correr del entrenamiento, el Q-Learner gana cada vez m\'as partidas de las 500. A su vez, el porcentaje acumulado aumenta consistentemente.
 
-Queda claro ver que al principio el Random gana algunos partidos m\'as que el Q-Learning, pero con muy pocas iteraciones, este comienza a ganar mayor cantidad de partidas.
-
 La curva de aprendizaje es creciente. Podemos observar que tras 200000 iteraciones el Q-Learner está ganando alrededor del 65\% de las partidas. Luego, tras las otras 800000 iteraciones, el porcentaje está alrededor del 75\%. Nos interesa ver por qué el ritmo decrece.
 
 Para observar el comportamiento del Q-Learner, jugamos partidas contra él para ver qué estrategia utiliza. Su estrategia es apilar fichas en la columna de más a la derecha. Si uno intenta bloquearlo, sigue poniendo fichas en esa columna hasta que se llene. Tras llenar esa columna, ya no es tan fijo lo que hace. Debido a que está jugando contra un Random, esto le debe traer buenos resultados un número interesante de veces.
@@ -22,9 +20,9 @@ Nuestra conjetura es que la gran mayoría de las veces que gana, gana con esa es
 
 Pero viendo esto, falta aún ver por qué pierde. La respuesta a la que llegamos es que en parte se debe al coeficiente de exploración. Es decir, si explora quizás pierde. Para probar esto, utilizamos al Q-Learner ya entrenado y le bajamos el coeficiente de exploración a 0. Lo pusimos a jugar nuevamente contra el Random, dando los siguientes resultados.
 
-\ig{Imagenes/Results/exp1/validation/valid_test_validation.png}{Porcentaje de victorias de Q-Learner en ventanas de 500 partidas con $\varepsilon = 0$}
+\ig{Imagenes/Results/exp1/normal_validation/normal_validation_validation.png}{Porcentaje de victorias de Q-Learner en ventanas de 500 partidas con $\varepsilon = 0$}
 
-\ig{Imagenes/Results/exp1/validation/valid_test_validation_acum.png}{Porcentaje total de victorias de Q-Learner a lo largo de las iteraciones con $\varepsilon = 0$}
+\ig{Imagenes/Results/exp1/normal_validation/normal_validation_validation_acum.png}{Porcentaje total de victorias de Q-Learner a lo largo de las iteraciones con $\varepsilon = 0$}
 
 Como sospechamos, una vez apagado su coeficiente de exploración, su desmepeño aumentó considerablemente, ganando por arriba del 90\% de las veces.
 

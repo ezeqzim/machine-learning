@@ -3,13 +3,18 @@
 El enfoque de este experimento fue observar cómo se comportan dos Q-Learner al entrenar compitiendo entre sí, para determinar si los resultados obtenidos indicaban una mejoría en sus estrategias de juego.
 Luego, cada uno de éstos compitió contra un jugador Random durante la misma cantidad de iteraciones y se graficaron los resultados.
 
-\ig{Imagenes/Results/exp2/gridsearch/gridsearch_training_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
+\ig{Imagenes/Results/exp2/normal/normal_training.png}{Porcentaje de victorias de cada Q-Learner en ventanas de 500 iteraciones}
 
-Ambos Q-Learners comienzan demostrando una baja inteligencia, ya que ambos realizan jugadas aleatorias al principio. Sin embargo, conforme avanzan las iteraciones, ambos comienzan a realizar mejores movimientos, y se puede observar que mejoran a un ritmo similar, dado que el porcentaje de victorias de cada uno tiende al 50\% al final, indicando que ambos tienen una estrategia para vencer al otro.\\
+\ig{Imagenes/Results/exp2/normal/normal_training_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
 
-Por los resultados obtenidos, se conjeturó que, una vez entrenado el Q-Learner, obtendrá más victorias contra el jugador Random que los obtenidos en el experimento anterior, cuando entrenó únicamente contra un jugador Random.
-Dicha conjetura se condijo con los resultados obtenidos.
+Observando el gráfico de los resultados tomados en ventanas de 500 iteraciones, se puede ver que las victorias de ambos fluctuan alrededor del 50\%, alternando quién es el que efectivamente posee el mayor porcentaje.
 
-\ig{Imagenes/Results/exp2/gridsearch/gridsearch_p1_test_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
+Entonces se procedió a observar si el Q-Learner entrenado contra otro Q-Learner tenía un mejor desempeño contra un jugador Random. Para esto se utilizó un coeficiente de exploración igual a 0. Se obtuvieron los siguientes resultados.
 
-\textcolor{red}{Nuestra conjetura es que se obtuvieron mejores resultados porque el enfrentamiento entre dos Q-Learners representa un desafío mayor que enfrentar a un jugador Random, dado que al jugador Random se le puede vencer con facilidad, en la mayoría de los casos, simplemente ubicando fichas en una misma columna.}
+\ig{Imagenes/Results/exp2/normal/normal_p1_test.png}{Porcentaje de victorias de cada Q-Learner en ventanas de 500 iteraciones}
+
+\ig{Imagenes/Results/exp2/normal/normal_p1_test_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
+
+Se puede observar que el Q-Learner gana por encima del 90\% de las veces. Los resultados no son mucho mejores que los del experimento anterior, por lo que se intentó jugar contra el Q-Learner. Esta vez su estrategia no era siempre ubicar las fichas en la columna de más a la derecha. De todas formas, seguía sin ganar cuando podía ganar y sin bloquear cuando podía perder. Pero su estrategia era un poco más variada.
+
+Nuestra conjetura es que se obtuvieron mejores resultados contra los humanos porque el enfrentamiento entre dos Q-Learners representa un desafío mayor que enfrentar a un jugador Random, dado que al jugador Random se le puede vencer con facilidad, en la mayoría de los casos, simplemente ubicando fichas en una misma columna.
