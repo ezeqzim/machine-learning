@@ -1,36 +1,46 @@
-\subsection{Aprende un Q-Learner inexperto contra un Q-Learner experimentado?}
+\subsection{¿Aprende un Q-Learner inexperto contra un Q-Learner experimentado?}
 
-Tras el experimento anterior, nos surje la duda de qué pasaría si tomásemos uno de los Q-Learners entrenados del experimento anterior y lo pusieramos a jugar contra un Q-Learner novato. Aprenderá? En caso de que aprenda, qué pasaría si luego lo hiciésemos jugar contra un Random? Estará preparado para ganarle?
+Tras el experimento anterior, surgió el interrogante de qué ocurriría si se tomase uno de los Q-Learners experimentados del experimento anterior y se lo pusiera a competir contra un Q-Learner no entrenado.
 
-Este experimento consiste en entrenar un Q-Learning frente a otro. Lo ejecutamos durante un mill\'on de iteraciones (hasta aqu\'i igual que el experimento 2). Luego, un nuevo Q-Learning entrena frente al que obtuvo el mayor win\_percentage\footnote{Fue una decisi\'on completamente arbitratria} de los anteriores, ejecutamos durante un mill\'on de iteraciones y graficamos los resultados. Para esto, al Q-Learner ya entrenado le ponemos $epsilon$ en 0. De esta forma le eliminamos la exploración. Finalmente, este \'ultimo compite contra un Random durante la misma cantidad de iteraciones y graficamos los resultados.
+En consecuencia, este experimento consiste en entrenar un Q-Learning frente a otro durante un mill\'on de iteraciones, al igual que se realizó en el experimento anterior, para luego introducir un nuevo Q-Learner que se entrene frente al que obtuvo el mayor porcentaje de victorias (ya se se asumió que éste era el que poseía una mejor estrategia) nuevamente durante un mill\'on de iteraciones, y finalmente, enfrentar al nuevo Q-Learner (ahora entrenado) contra el Random.
 
-A medida que vayan entrenando el experimentado contra el inexperto, queremos ver si el inexperto aprende algo. Es decir, si comienza a ganarle en algún momento al Q-Learner experimentado.
+Una vez entrenado el nuevo Q-Learner, se procedió a desactivar la exploración y enfrentarlo contra el Random durante la misma cantidad de iteraciones.
 
-\subsubsection{Primeros Resultados} %Poner un nombre más peola amewo
+Se desea conocer si luego del entrenamiento, el nuevo Q-Learner logra aprender contra el jugador experimentado, es decir, si comienza a obtener victorias.
 
-Al correr el experimento con los parametros $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0, los resultados fueron los siguientes.
+Asímismo, se adjunta en esta sección, la discusión respecto a los resultados de este experimento utilizando los parámetros $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0.
 
-Presentamos a continuación los resultados del mejor Q-Learner experimentado (Rojo) contra el Q-Learner novato (Azul).
+Para facilitar la lectura, llamaremos \emph{Parámetros Gridsearch} a los parámetros mencionados, y \emph{Parámetros Finales} a los parametros utilizados; y llamaremos Q-Learner experimentado al Q-Learner que entrena contra otro Q-Learner en la primera fase del experimento, y Q-Learner novato al Q-Learner que se enfrenta contra el Q-Learner experimentado
+
+\subsubsection{Resultados utilizando \emph{Parámetros Gridsearch}} %Poner un nombre más peola amewo
+
+Al ejecutar el experimento con los parametros $\varepsilon = $ 0.0, $\alpha = $ 0.1 y $\gamma = $ 1.0, se obtuvieron los siguientes resultados al enfrentar un Q-Learner experimentado contra un Q-Learner novato. El Q-Learner experimentado esta representado con el color rojo, mientras que el Q-Learner novato esta representado con el color azul.
 
 \ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training.png}{Porcentaje de victorias de cada Q-Learner en ventanas de 500 iteraciones}
 
 \ig{Imagenes/Results/exp3/gridsearch/gridsearch_best_p3_training_acum.png}{Porcentaje de victorias de cada Q-Learner a lo largo de las iteraciones}
 
-Estos resultados demuestran que un Q-Learner sin entrenar puede vencer a un Q-Learner entrenado. Estos resultados nos sorprendieron. Dado que el Q-Learner novato comienza siendo casi un Random y el entrenado ya poseía experiencia, lo esperado era que el novato perdiese.
+Estos resultados demuestran que un Q-Learner novato puede vencer a un Q-Learner experimentado. 
+Estos resultados fueron inesperados, dado que el Q-Learner novato comienza comportandose de forma similar al Random, y el experimentado ya poseía experiencia. Lo esperado fue que el Q-Learner novato perdiese.
 
-Se conjeturó que esto sucede porque no se favorece la exploración de nuevos estados (es decir, el Q-Learner solo explora cuando no conoce un estado, y realiza la misma jugada siempre si lo conoce), y porque el $\alpha$ es muy bajo, lo que indica que deja de aprender a un ritmo muy rápido. Lo que podría estar ocurriendo, es que el Q-Learner entrenado siempre intente realizar la misma estrategia, por lo que el nuevo Q-Learner sólo debe aprender a vencerla.
-Una forma de validar que dicha conjetura es cierta, fue creando un nuevo jugador, el jugador Bobo, cuyas unico movimiento es poner una ficha en la última columna donde se pueda colocar; y se verificó que éste tuviera resultados similares a los del Q-Learner cuando se enfrenta al jugador Random.
+Se conjeturó que esto sucede porque no se favorece la exploración de nuevos estados (es decir, el Q-Learner solo explora cuando no conoce un estado, y realiza la misma jugada siempre si lo conoce), y porque el $\alpha$ es muy bajo, lo que indica que deja de aprender a un rápidamente. 
+
+Lo que podría estar ocurriendo, es que el Q-Learner experimentado siempre intenta realizar la misma estrategia, por lo que el nuevo Q-Learner sólo debe aprender a vencerla.
+Una forma de validar que dicha hipótesis, fue creando un nuevo jugador, el jugador Bobo, cuyo único movimiento es poner una ficha en la última columna donde se pueda colocar una; y se verificó que éste tuviera resultados similares a los del Q-Learner cuando se enfrenta al jugador Random.
 Los resultados fueron los siguientes:
 
 \ig{Imagenes/Results/exp3/bobo/bobo.png}{Porcentaje de victorias del BoboPlayer y el RandomPlayer en ventanas de 500 iteraciones}
 
 \ig{Imagenes/Results/exp3/bobo/bobo_acum.png}{Porcentaje de victorias totales del BoboPlayer y el RandomPlayer}
 
-Como se puede observar, el jugador Bobo juega bien contra el Random, obteniendo un 80\% de victorias. Esto es un resultado un poco peor que el del Q-Learner pero muestra que ver qué porcentaje de victorias tiene contra un Random no es una métrica muy buena.
+Como se puede observar, el jugador Bobo obtiene gran número de victorias contra el Random, obteniendo alrededor de un 80\% de ellas. 
+Este es un resultado levemente peor que el del Q-Learner, pero muestra que el porcentaje de victorias que tiene un Q-Learner contra el Random no es una métrica apropiada.
 
-Así, se llegó a la conclusión de que los parámetros escogidos no eran los adecuados. Tener un $alpha$ muy bajo y un $epsilon$ en 0 no estaban conceptualmente bien. Por esta razón se volvieron a elegir parámetros, optando por los siguientes: $\varepsilon = $ 0.2, $\alpha = $ 0.3 y $\gamma = $ 0.9
+Finalmente, se concluyó que los parámetros escogidos no eran los adecuados. Tener un $alpha$ muy bajo y un $epsilon$ en 0 no eran conceptualmente correctos. 
 
-\subsubsection{Resultados Posta}
+Por esta razón se volvieron a elegir parámetros, optando por los siguientes: $\varepsilon = $ 0.2, $\alpha = $ 0.3 y $\gamma = $ 0.9
+
+\subsubsection{Resultados utilizando \emph{Parámetros Finales}}
 
 Se repitió el experimento con los parámetros mencionados y se obtuvieron los siguientes resultados:
 
@@ -38,20 +48,31 @@ Se repitió el experimento con los parámetros mencionados y se obtuvieron los s
 
 \ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_best_p3_training_acum.png}{Porcentaje de partidas ganadas de cada Q-Learner}
 
-Podemos ver que durante las primeras 250000 iteraciones el Q-Learner experimentado siempre tuvo un porcentaje de partidas ganadas mayor, pero que el novato iba ganando cada vez más. Luego, comienzan a ganar más parejo. En el gráfico tomado de a 500 partidas, se pueden observar picos en dónde algúno mejora momentáneamente. En el acumulado se ve una curva más estable. El experimentado continúa aprendiendo, pero ya no explora más. De esto concluímos que jugando contra un oponente experimentado de todas formas aprende.
+Se puede observar que durante las primeras 250000 iteraciones el Q-Learner experimentado obtiene un porcentaje mayor de partidas ganadas, pero que el Q-Learner novato comienza a ganar cada vez con más frecuencia. 
 
-Vemos que en el gráfico de las partidas tomadas cada 500, alrededor de las 600000 iteraciones hay un período donde el porcentaje del novato crece y luego decrece. Conjeturamos que quizás descubrió una buena estrategia y al experimentado le llevó todas esas iteraciones ‘‘aprender cómo vencerla''. Creemos que esto se debe a que el experimentado sigue aprendiendo. Esto nos lleva a la pregunta de qué ocurriría si dejase de aprender.
+Luego, comienzan a ganar una cantidad similar de veces. En el gráfico tomado de a 500 partidas, se pueden observar picos en dónde algúno mejora momentáneamente. En el acumulado se puede apreciar una curva más estable. 
 
-Para esto repetimos el experimento, pero además de poner el $epsilon$ en 0 también ponemos el $alpha$ en 0. Observamos lo siguiente:
+El Q-Learner experimentado continúa aprendiendo, pero deja de explorar. 
+
+De esto concluímos que el Q-Learner novato, jugando contra un oponente entrenado, logra aprender.
+
+Luego, observando el gráfico de las partidas tomadas cada 500 partidas, se puede ver que alrededor de las 600000 iteraciones hay un período donde el porcentaje de victorias del Q-Learner novato crece y luego decrece. 
+
+Se conjeturó que quizás descubrió una buena estrategia y el Q-Learner experimentado necesitó de todas esas iteraciones para aprender cómo vencerla. La hipótesis es que esto se debe a que el experimentado sigue aprendiendo. 
+Consecuentemente, se determinó que es de interés saber qué ocurriría si dejáse de aprender.
+
+Para esto se repitió el experimento, pero además de desactivar la exploración, también se desactivó el aprendizaje del experimentado. Se observó lo siguiente:
 
 \ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training.png}{Porcentaje de partidas ganadas de cada Q-Learner en ventanas de 500 iteraciones}
 
 \ig{Imagenes/Results/exp3/no_learn/no_learn_best_p3_training_acum.png}{Porcentaje de partidas ganadas de cada Q-Learner}
 
-Aquí podemos ver cómo el novato comienza a ganarle más veces al experimentado. Podemos ver que, al no aprender nada, el Experimentado comienza a perder cada vez más. Esto parece apoyar nuestra hipótesis de que en el experimento previo lo que sucedió fue que primero el novato aprendió una forma nueva de ganar y luego el experimentado aprendió a contrarrestarla.
+Se puede apreciar cómo el novato comienza a obtener un mayor número de victorias contra al experimentado. Esto parece apoyar la hipótesis de que en el experimento previo, lo que sucedió fue que primero el novato aprendió una forma nueva de ganar y luego el experimentado aprendió a contrarrestarla.\\
 
-Por último, cuando los Q-Learners comienzan, son casi un Random, dado que no tienen experiencia. Por eso, en el experimento anterior, ambos Q-Learners tuvieron en cierta medida experiencia de jugar contra Randoms, a pesar de haber entrenado entre sí. Para un Q-Learner novato que se enfrenta a uno ya entrenado, nuestra conjetura es que no recibirá la ‘‘experiencia'' de jugar contra un Random. Por eso, quizás al jugar luego contra un Random, no le vaya bien.
+Por último, es necesario aclarar que cuando los Q-Learners comienzan a entrenar, poseen un comportamiento similar al Random, dado que no tienen experiencia. Por este motivo, en el experimento anterior, ambos Q-Learners tuvieron, en cierta medida, la experiencia de jugar contra un jugador Random, a pesar de haber entrenado entre únicamente entre sí. 
 
-Por eso se corrió un último experimento, haciendo jugar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado) contra un Random. Los resultados fueron los siguientes>
+Para un Q-Learner novato que se enfrenta a uno ya entrenado, se conjeturó que no recibirá la experiencia de jugar contra un Random. Por eso, se supuso que al jugar luego contra un Random, sea propenso a tener un gran número de derrotas contra él.
+
+En consecuencia, se ejecutó un último experimento, que constó enfrentar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado) contra un Random. Los resultados fueron los siguientes
 
 
