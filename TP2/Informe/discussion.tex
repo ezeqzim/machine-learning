@@ -1,1 +1,9 @@
-\section{Discusión}
+\section{Conclusiones}
+
+En primer lugar, llegamos a la conclusión de que se debe ser cuidadoso al medir resultados contra jugadores aleatorios. Estos pueden ser engañosos, como se observó con el BoboPlayer. Siempre es conveniente jugar contra el Q-Learner para ver qué hace y ponerlo a jugar contra otros Q-Learners.
+
+Luego, notamos que los resultados obtenidos contra humanos no son muy buenos. El Q-Learner nunca supuso un desafío ni pareció aprender a bloquear victorias del oponente. Quizás, si se entrenasen dos Q-Learners durante un número astronómico de iteraciones (por cuestiones de memoria no pudimos hacer más de un millón), éstos aprenderían lo suficiente como para resultar un desafío. Quizás visitarían una cantidad suficiente de estados. En cambio una conclusión a la que se llegó es que si se lo dejase entrenando contra un Random una cantidad astronómica de iteraciones, el Q-Learner no sería desafiante para un humano, dado que el Random no lo obliga a visitar muchos estados y la gran mayoría de esas iteraciones las pasaría ganando con una estrategia mala como la del BoboPlayer.
+
+Sería también interesante probar qué sucedería si se pudiese entrenar al Q-Learner contra humanos. Es decir, hacerlo jugar contra distintos humanos por millones de iteraciones. Conjeturamos que quizás ese entrenamiento sería mucho más eficiente y quizás aprendería a jugar de forma tal que resulte desafiante contra un humano.
+
+Es probable que, con más lógica encima, el Q-Learner obtenga (es decir, obligandolo a ganar si puede ganar o a bloquear si el oponente puede ganar) muchos mejores resultados. Quizás dándole más rewards a estados donde acaba de bloquear también. Nuestro enfoque fue intentar que el Q-Learner aprenda con la menor lógica posible, para poder observar qué resultados se obtenían partiendo de un planteo tan simple. Por falta de tiempo no se pudo explorar mucho más qué pasaría si tuviera lógica encima.
