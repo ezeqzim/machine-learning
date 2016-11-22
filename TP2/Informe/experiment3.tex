@@ -73,6 +73,14 @@ Por último, es necesario aclarar que cuando los Q-Learners comienzan a entrenar
 
 Para un Q-Learner novato que se enfrenta a uno ya entrenado, se conjeturó que no recibirá la experiencia de jugar contra un Random. Por eso, se supuso que al jugar luego contra un Random, sea propenso a tener un gran número de derrotas contra él.
 
-En consecuencia, se ejecutó un último experimento, que constó enfrentar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado) contra un Random. Los resultados fueron los siguientes
+En consecuencia, se ejecutó un último experimento, que constó enfrentar al Q-Learner novato (tras entrenar durante un millón de iteraciones con el experimentado) contra un Random. Los resultados fueron los siguientes:
 
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_p3_random_test.png}{Porcentaje de partidas ganadas de cada Q-Learner en ventanas de 500 iteraciones}
 
+\ig{Imagenes/Results/exp3/zero_any_move/zero_any_move_p3_random_test_acum.png}{Porcentaje de partidas ganadas de cada Q-Learner}
+
+Se puede observar que, al comenzar, los porcentajes son cercanos al 50\%, lo que implica que a diferencia de los otros experimentos (donde una vez entrenado, el Q-Learner siempre comenzaba ganandole al Random), éste Q-Learner comienza ganando un número reducido de partidas contra el Random. 
+
+Esto parece validar la hipótesis de que nunca tuvo la experiencia de jugar contra un jugador Random. De todas formas, rápidamente aprende cómo vencerlo y hacia el final del experimento consigue ganar un 85\% de las veces.
+
+Finalmente, se concluyó que al haber jugado únicamente contra oponentes más inteligentes, al enfrentarse a un Random, el Q-Learner no poseía conocimiento de los estados que se le presentaron, lo que produjo que obtuviera un mayor número de derrotas; pero a su vez, por ese mismo entrenamiento obtenido, logró aprender a vencer al Random a un ritmo más acelerado.
