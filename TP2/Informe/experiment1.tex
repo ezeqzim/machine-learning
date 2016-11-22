@@ -1,8 +1,9 @@
-\subsection{Aprende el Q-Learner contra un Random?}
+\subsection{¿Aprende el Q-Learner contra un Random?}
 
-En un principio queremos saber si el Q-Learner aprende. Es decir, si tras un número considerable de partidas jugadas contra un Random, consigue aumentar su porcentaje de partidas ganadas. Para probar ésto entrenamos a un Q-Learner contra un Random durante un millón de iteraciones, graficando los resultados \footnote{Para graficar los resultados de los experimentos, se presentan dos tipos de gráficos. Primero, se cuenta la cantidad de partidas ganadas por cada jugador en ventanas de 500 partidas y se calcula el porcentaje que cada uno ganó. Luego, se presenta una cuenta similar pero siempre sobre el total de partidas, en lugar de sobre ventanas de 500.}.
+La intención de este experimento fue observar si el Q-Learner aprende, es decir, si tras un número considerable de partidas jugadas contra un Random, consigue aumentar su porcentaje de partidas ganadas.\\
+Para probar esto, se entrenó a un Q-Learner contra un Random durante un millón de iteraciones, graficando los resultados.
 
-Nuestra conjetura es que el Q-Learner va a aprender. Es decir, a medida vayan pasando las iteraciones, el porcentaje de partidas ganadas va a aumentar. También esperamos que tras aproximadamente 200000 iteraciones ya comience a notarse la mejoría.
+Se conjeturó que el Q-Learner aprenderá, a medida vayan pasando las iteraciones, y por lo tanto el porcentaje de partidas ganadas aumentará. Se estimó que esta mejoría se hará visible tras aproximadamente 200000 iteraciones.
 
 Se presentan a continuación los resultados del experimento.
 
@@ -10,24 +11,27 @@ Se presentan a continuación los resultados del experimento.
 
 \ig{Imagenes/Results/exp1/zero_any_move/zero_any_move_acum.png}{Porcentaje de victorias totales de Q-Learner a lo largo de las iteraciones}
 
-Se puede ver que con el correr del entrenamiento, el Q-Learner gana cada vez m\'as partidas de las 500. A su vez, el porcentaje acumulado aumenta consistentemente.
+Se puede observar que conforme avanzan las iteraciones, el Q-Learner gana cada vez m\'as partidas (en los intervalos de 500 partidas), con lo cual el porcentaje acumulado aumenta consistentemente.\\
+La curva de aprendizaje es creciente, pero presenta una un comportamiento asintótico. \\
+Se observar que tras 200000 iteraciones, el Q-Learner gana aproximadamente el 65\% de las partidas, y tras las otras 800000 iteraciones, el porcentaje está alrededor del 75\%.
 
-Queda claro ver que al principio el Random gana algunos partidos m\'as que el Q-Learning, pero con muy pocas iteraciones, este comienza a ganar mayor cantidad de partidas.
+Para entender el comportamiento del Q-Learner, se jugaron varias partidas contra él para ver qué estrategia utiliza. \\
+Su estrategia consistió en apilar fichas en la columna de más a la derecha. Si uno intenta bloquearlo, sigue poniendo fichas en esa columna hasta que se llene. Tras llenar esa columna, ya no es posible determinar con seguridad su comportamiento. \\
+Debido a que está jugando contra un Random, se estima que esta estrategia le otorga la victoria un número interesante de veces.
 
-La curva de aprendizaje es creciente. Podemos observar que tras 200000 iteraciones el Q-Learner está ganando alrededor del 65\% de las partidas. Luego, tras las otras 800000 iteraciones, el porcentaje está alrededor del 75\%. Nos interesa ver por qué el ritmo decrece.
+Se conjeturó que la gran mayoría de las veces que gana, gana utilizando dicha estrategia, por lo que otorga un gran valor de $Q$ a esos estados y transiciones. Además, el Random no es un oponente interesante y suponemos que no le da la oportunidad de probar nuevos estados.
 
-Para observar el comportamiento del Q-Learner, jugamos partidas contra él para ver qué estrategia utiliza. Su estrategia es apilar fichas en la columna de más a la derecha. Si uno intenta bloquearlo, sigue poniendo fichas en esa columna hasta que se llene. Tras llenar esa columna, ya no es tan fijo lo que hace. Debido a que está jugando contra un Random, esto le debe traer buenos resultados un número interesante de veces.
-
-Nuestra conjetura es que la gran mayoría de las veces que gana, gana con esa estrategia, por lo tanto dándole un gran valor de Q a esos estados y transiciones. Además, el Random no es un oponente muy interesante y conjeturamos que no le da la oportunidad de probar nuevos estados interesantes.
-
-Pero viendo esto, falta aún ver por qué pierde. La respuesta a la que llegamos es que en parte se debe al coeficiente de exploración. Es decir, si explora quizás pierde. Para probar esto, utilizamos al Q-Learner ya entrenado y le bajamos el coeficiente de exploración a 0. Lo pusimos a jugar nuevamente contra el Random, dando los siguientes resultados.
+Realizando un análisis de por qué su aprendizaje comienza a decrecer, se concluyó a que se debe, en parte, al coeficiente de exploración, es decir, si explora corre el riesgo de  perder.\\
+Para validar dicha hipótesis, se utilizó al Q-Learner ya entrenado y se le prohibió explorar, para luego enfrentarlo al Random.\\
+Los resultados fueron los siguientes.
 
 \ig{Imagenes/Results/exp1/validation/valid_test_validation.png}{Porcentaje de victorias de Q-Learner en ventanas de 500 partidas con $\varepsilon = 0$}
 
 \ig{Imagenes/Results/exp1/validation/valid_test_validation_acum.png}{Porcentaje total de victorias de Q-Learner a lo largo de las iteraciones con $\varepsilon = 0$}
 
-Como sospechamos, una vez apagado su coeficiente de exploración, su desmepeño aumentó considerablemente, ganando por arriba del 90\% de las veces.
+Como se supuso, una vez desactivada la exploración, su desmepeño aumentó considerablemente, ganando por encima del 90\% de las veces.
 
-Cuando aún tenía el $\varepsilon$ mayor a cero, la exploración hacía que se desvíe de su estrategia. Una vez se desvía de su estrategia ganadora, vemos que su desempeño empeora. Nuestra conjetura es que, probablemente la mayor parte de sus victorias son con la estrategia de la columna derecha. Entonces no está aprendiendo mucho. Simplemente gana muchas partidas con una estrategia poco inteligente. Entonces le lleva mucho tiempo aprender cosas nuevas, porque está jugando contra un jugador muy poco inteligente.
+Cuando aún tenía el $\varepsilon$ mayor a cero, la exploración hacía que se desvíe de su estrategia. Una vez se desvía de su estrategia ganadora, se puede observar que su desempeño empeora.\\
+La hipótesis que se plantea entonces es que probablemente obtenga la mayor cantidad de victorias siguiendo con la estrategia de ubicar fichas en la columna de la derecha.\\ Por lo tanto, no está aprendiendo demasiado, dado que simplemente obtiene la victoria en muchas partidas utilizando una estrategia poco inteligente. Esto supone que el aprendizaje se realiza lentamente, ya que se está enfrentando contra un jugador muy poco inteligente.
 
-Con esto en mente, decidimos ver qué ocurre si lo entrenamos contra un oponente más inteligente.
+En vista de estos resultados, se decidió ver qué ocurre si se lo entrena contra un oponente más inteligente.
