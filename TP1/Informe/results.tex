@@ -1,78 +1,120 @@
 \section{Resultados}
 
+Antes de comenzar se separó un 10\% de los correos (4500 correos \emph{ham} y 4500 correos \emph{spam}) para usar como datos de validación.
+
 \subsection{Clasificadores (etapas 1 y 2)}
 
 En esta sección se presentan los resultados de las ejecuci\'on de cada clasificador sobre los datos de validaci\'on con su mejor combinación de hiperparámetros según \texttt{GridSearch}.
 
 A cada grupo de hiperpar\'ametros, hay que agregarle aquellos predeterminados de \texttt{Sklearn}.
 
-\subsubsection{Decision Tree}
 Para el \emph{Decision Tree Classifier}, los mejores hiperpar\'ametros fueron:
 \begin{itemize}
-	\itemparam{max\_features}{None}
-	\itemparam{splitter}{best}
-	\itemparam{criterion}{entropy}
-	\itemparam{max\_depth}{25}
+  \itemparam{max\_features}{None}
+  \itemparam{splitter}{best}
+  \itemparam{criterion}{entropy}
+  \itemparam{max\_depth}{25}
 \end{itemize}
-Los resultados fueron los siguientes:
-\ig{Imagenes/Results/DecisionTree.png}
 
-\subsubsection{Gaussian Naive Bayes}
 El \emph{Gaussian Naive Bayes Classifier} no toma ning\'un par\'ametro.
-Los resultados fueron los siguientes:
-\ig{Imagenes/Results/GaussianNaiveBayes.png}
 
-\subsubsection{Multinomial Naive Bayes}
 Para el \emph{Multinomial Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
 \begin{itemize}
-	\itemparam{alpha}{0.0}
-	\itemparam{fit\_prior}{true}
+  \itemparam{alpha}{0.0}
+  \itemparam{fit\_prior}{true}
 \end{itemize}
-Los resultados fueron los siguientes:
-\ig{Imagenes/Results/MultinomialNaiveBayes.png}
 
-\subsubsection{Bernoulli Naive Bayes}
 Para el \emph{Bernoulli Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
 \begin{itemize}
-	\itemparam{binarize}{0.0}
-	\itemparam{alpha}{0.5}
-	\itemparam{fit\_prior}{true}
+  \itemparam{binarize}{0.0}
+  \itemparam{alpha}{0.5}
+  \itemparam{fit\_prior}{true}
 \end{itemize}
-Los resultados fueron los siguientes:
-\ig{Imagenes/Results/BernoulliNaiveBayes.png}
 
-\subsubsection{Random Forest}
 Para el \emph{Random Forest Classifier}, los mejores hiperpar\'ametros fueron:
 \begin{itemize}
-	\itemparam{max\_features}{sqrt}
-	\itemparam{n\_estimators}{15}
-	\itemparam{bootstrap}{false}
-	\itemparam{criterion}{entropy}
-	\itemparam{max\_depth}{None}
+  \itemparam{max\_features}{sqrt}
+  \itemparam{n\_estimators}{15}
+  \itemparam{bootstrap}{false}
+  \itemparam{criterion}{entropy}
+  \itemparam{max\_depth}{None}
 \end{itemize}
+
 Los resultados fueron los siguientes:
-\ig{Imagenes/Results/RandomForest.png}
 
-%%TODO ALGUIEN
-%%Mencionar efectivamente cual fue la mejor combinación de parámetros para cada clasificador según gridsearch.
-
-%%TODO EZE
-%%idem de la sección anterior, no se si hablar de las cosas que fallaron y etc. allá o acá.
-
-%%TODO FRAN
-%%Gráficos. Básicamente la idea es que grafiques para todas las cosas que tira el score-report (recall, precision, etc.) cada clasificador. Tipo, un gráfico sería el F1-SCORE para todos, otro gráfico sería PRECISION para todos, etc.
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+  \hline
+  Técnica & Precision & Recall & F1-Score \\
+  \hline
+  Decision Tree & 0.99 & 0.99 & 0.99 \\
+  \hline
+  Gaussian Naive Bayes & 0.94 & 0.94 & 0.94 \\
+  \hline
+  Multinomial Naive Bayes & 0.90 & 0.88 & 0.88 \\
+  \hline
+  Bernoulli Naive Bayes & 0.93 & 0.93 & 0.93 \\
+  \hline
+  Random Forest & 1.00 & 1.00 & 1.00 \\
+  \hline
+\end{tabular}
+\end{center}
 
 \subsection{Reducción de la dimensionalidad (etapa 3)}
 
 En esta secci\'on se presentan los resultados de las ejecuciones de cada clasificador sobre los datos de validaci\'on utilizando las t\'ecnicas de reducci\'on de la dimensionalidad.
-Se muestra la puntuaci\'on obtenida en la validaci\'on sin utilizar ninguna t\'ecnica (Raw) y utilizando las distintas t\'ecnicas, y para cada t\'ecnica, se muestra el mejor resultado usando los mejor hiperpar\'ametros.
+Se muestra la puntuaci\'on obtenida en la validaci\'on sin utilizar ninguna t\'ecnica (Raw) y utilizando las distintas t\'ecnicas. Para cada t\'ecnica, se muestra el resultado usando los mejores hiperpar\'ametros.
 
-\ig{Imagenes/Results/DecisionTreeReddim.png}
+Para el \emph{Decision Tree Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+  \itemparam{Variance Threshold}{Eliminar varianza menor a 0.2}
+  \itemparam{Select Percentile}{Usando percentil 50}
+  \itemparam{PCA}{Guardando porcentaje de varianza 0.99}
+\end{itemize}
 
-\ig{Imagenes/Results/GaussianNaiveBayesReddim.png}
+Para el \emph{Gaussian Naive Bayes Classifier}, los mejores hiperparámetros fueron:
+\begin{itemize}
+  \itemparam{Variance Threshold}{Eliminar varianza menor a 0.15}
+  \itemparam{Select Percentile}{Usando percentil 50}
+  \itemparam{PCA}{Guardando porcentaje de varianza 0.99}
+\end{itemize}
 
-\ig{Imagenes/Results/MultinomialNaiveBayesReddim.png}
+Para el \emph{Multinomial Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+  \itemparam{Variance Threshold}{Eliminar varianza menor a 0.15}
+  \itemparam{Select Percentile}{Usando percentil 10}
+\end{itemize}
 
-\ig{Imagenes/Results/BernoulliNaiveBayesReddim.png}
+Para el \emph{Bernoulli Naive Bayes Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+  \itemparam{Variance Threshold}{Eliminar varianza menor a 0.15}
+  \itemparam{Select Percentile}{Usando percentil 50}
+  \itemparam{PCA}{Guardando porcentaje de varianza 0.99}
+\end{itemize}
 
-\ig{Imagenes/Results/RandomForestReddim.png}
+Para el \emph{Random Forest Classifier}, los mejores hiperpar\'ametros fueron:
+\begin{itemize}
+  \itemparam{Variance Threshold}{Eliminar varianza menor a 0.25}
+  \itemparam{Select Percentile}{Usando percentil 20}
+  \itemparam{PCA}{Guardando porcentaje de varianza 0.99}
+\end{itemize}
+
+Los resultados fueron los siguientes:
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|}
+  \hline
+  Técnica & Accuracy Raw & Accuracy Variance & Accuracy Percentile & Accuracy PCA \\
+  \hline
+  Decision Tree & 0.99 & 0.99 & 0.99 & 0.95 \\
+  \hline
+  Gaussian Naive Bayes & 0.94 & 0.94 & 0.93 & 0.52 \\
+  \hline
+  Multinomial Naive Bayes & 0.86 & 0.5 & 0.92 & - \\
+  \hline
+  Bernoulli Naive Bayes & 0.93 & 0.93 & 0.94 & 0.70 \\
+  \hline
+  Random Forest & 1.00 & 1.00 & 1.00 & 0.97\\
+  \hline
+\end{tabular}
+\end{center}

@@ -1,8 +1,8 @@
 \section{Modelos}
 
-Una vez escogidos los atributos, se discutió qué clasificadores se probarían y qué combinaciones de parámetros que se utilizar\'ian para cada uno. Para ello, se hizo uso de la clase \texttt{GridSearch}\textsuperscript{\cite{gridsearch}}, que nos permite hacer una b\'usqueda exhaustiva en las combinaciones de los hiperpar\'ametros, midiendo la performance con el mecanismo de \emph{10 Fold Cross Validation}.
+Una vez escogidos los atributos, se discutió qué clasificadores se probarían y qué combinaciones de parámetros se utilizar\'ian para cada uno. Para ello, se hizo uso de la clase \texttt{GridSearch}\textsuperscript{\cite{gridsearch}}, que nos permite hacer una b\'usqueda exhaustiva en las combinaciones de los hiperpar\'ametros, midiendo la performance con el mecanismo de \emph{10 Fold Cross Validation}.
 
-Luego se procedió a guardar la mejor combinación de hiperparámetros para cada clasificador según \texttt{GridSearch}. Para esto se decidió utilizar el \emph{F1 Score}, pues provee conocimiento sobre la \emph{precision} y el \emph{recall}, teniendo en cuenta que buscamos no fallar en el reconocimiento de un correo de \emph{spam}, es decir, no clasificar \emph{ham} como \emph{spam}.
+Luego se procedió a guardar la mejor combinación de hiperparámetros para cada clasificador según \texttt{GridSearch}. Para esto se decidió utilizar el \emph{F1 Score}, pues provee conocimiento sobre la \emph{precision} y el \emph{recall}. Si bien sabemos que en este tipo de problemas conviene no fallar en el reconocimiento de un correo de \emph{spam}, es decir, no clasificar \emph{ham} como \emph{spam}, y por ende usar otro valor de $\beta$, dada la competencia planteada en clase creemos que el F1 Score hará un mejor trabajo maximizando el reconocimiento de ambas clases.
 
 Finalmente, se ejecut\'o cada uno de los clasificadores con su mejor combinación de hiperparámetros sobre el conjunto de validación.
 
@@ -101,6 +101,3 @@ En cuanto a \emph{K Nearest Neighbours Classifiers}, sus ejecuciones retornaron 
   \item \texttt{outlier\_label}: Label, which is given for outlier samples (samples with no neighbors on given radius).\\
   \texttt{2}
 \end{itemize}
-
-\noindent Antes de comenzar se separó un 10\% de los correos (4500 correos \emph{ham} y 4500 correos \emph{spam}) para usar como datos de validación.
-
